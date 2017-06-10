@@ -1,0 +1,14 @@
+.panel { background-color: #ffffff; border: 1px solid transparent; border-radius: 4px;}
+.panel-heading { text-align: center; }
+
+.panel-blue { border-color: #325d88; float: left;}
+.panel-blue > .panel-heading { color: #ffffff; background-color: #325d88; border-color: #325d88;}
+
+.panel-darkgrey { border-color: #3e3f3a; float: left;}
+.panel-darkgrey > .panel-heading { color: #ffffff; background-color: #3e3f3a; border-color: #325d88;}
+
+.panel-red { border-color: #325d88; float: left;}
+.panel-red > .panel-heading { color: #ffffff; background-color: #325d88; border-color: #325d88;}
+
+.panel-green { border-color: #325d88; float: left;}
+.panel-green > .panel-heading { color: #ffffff; background-color: #325d88; border-color: #325d88;}

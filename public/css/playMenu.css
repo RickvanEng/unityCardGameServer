@@ -1,0 +1,70 @@
+#mainAccepted {
+	/*border: 1px solid blue;*/
+	display: none;
+	width: 90%; 
+	height: 100%;
+	margin-left: 50px;
+	margin-top: 50px;
+	margin-right: 50px;
+	margin-bottom: 50px;
+}
+
+#decks {
+	float: left;
+}
+
+#title {
+	width: 100%;
+	/*border: 1px solid yellow;*/
+}
+
+#DeckLoader {
+	float: left;
+	width: 100%;
+	margin-top: 20px;
+	/*border: 1px solid black;*/
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+#one {
+	float: left;
+	height: 50%;
+	width: 50%;
+	/*border: 1px solid red;*/
+}
+
+#Two {
+	float: left;
+	width: 25%;
+	margin-left: 10px;
+	/*border: 1px solid green;*/
+	clear: right;
+}
+
+#selectedDeckTitle {
+	margin-top: 10px;
+}
+
+#selectedDeck {
+	margin-top: 10px;
+	/*background-color: green;*/
+	height: 60%;
+	width: 100%;
+}
+
+#editDeckDiv {
+	margin-top: 10px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	width: 100%;
+}
+
+#Three {
+	float: left;
+	width: 70%;
+	padding-top: 20px;
+	margin-top: 10px;
+	margin-left: 20px;
+	/*border: 1px solid black;*/
+}

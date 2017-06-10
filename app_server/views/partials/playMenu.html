@@ -1,0 +1,51 @@
+<div class"var-container">
+
+    <div id="main">
+        <p> please Log in to continue! </p>
+    </div>
+
+    <div id="mainAccepted">
+        <div id="One">
+            <div id="title">
+                <h1>Menu</h1>
+                <p> Select the deck you want to play with</p>
+            </div>
+
+            <div id="DeckLoader">
+                <div id="decks" ng-repeat="deck in playerDecks">
+                    <a class="button" data-ng-click="selectDeck(deck)">
+                        <span>{{deck.deckName}} {{deck.cards.length}}/30</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="Two">
+            <div id="selectedDeckTitle">
+                <h2>Selected deck: {{selectedDeck.deckName}}</h2>
+                <div id="holder" ng-repeat="card in (selectedDeck.cards | orderBy: 'name') track by $index" data-ng-show="card.name != (selectedDeck.cards | orderBy: 'name')[$index - 1].name">
+                    <p id="card card-1" style="float:left; width: 70%; margin-left: 10px;">{{card.name}}</p>
+
+                    <p style="float:right; margin-right:10px; width: 20%;">{{ getTotalAmount(card.name) }}</p>
+                </div>
+            </div>
+
+            <div id="selectedDeck">
+            </div>
+
+            <div id="editDeckDiv">
+                <a href="#cardBrowser"><button type="button">Edit Deck!</button></a>
+            </div>
+
+            <!--<a href="#Deckbuilder" class="button" data-ng-click="selectDeck(deck)">
+            <span>Edit Decks</span>
+        </a>-->
+        </div>
+
+        <div id="Three">
+            <a class="button" ng-click="openWindow()">
+                <span>Play!</span>
+            </a>
+        </div>
+    </div>
+</div>

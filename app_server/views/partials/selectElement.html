@@ -1,0 +1,382 @@
+<div class="SE-main">
+    <div id="SE-headerDiv">
+        <div id="SE-backButtonDiv">
+            <a href="#selectRace">
+                <img src="img/next.png"/ style="height: 100%; transform: rotate(180deg);"/>
+            </a>
+        </div>
+
+        <div id="SE-nextButtonDiv">
+            <a href="#cardBrowser">
+                <button type="button" ng-click="startDeckBuild()">next</button>
+            </a>
+        </div>
+
+        <div id="SE-titleDiv">
+            <h1>Select Elements</h1>
+        </div>
+    </div>
+
+    <div id="SE-elementWrapper">
+        <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-fireButton"     ng-click="addElement('fire')">Fire</button></div>
+        <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-earthButton"    ng-click="addElement('earth')">Earth</button></div>
+        <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-waterButton"    ng-click="addElement('water')">Water</button></div>
+        <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-airButton"      ng-click="addElement('air')">Air</button></div>
+        <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-holyButton"     ng-click="addElement('holy')">Holy</button></div>
+        <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-darkButton"     ng-click="addElement('dark')">Dark</button></div>
+        <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-arcaneButton"   ng-click="addElement('arcane')">Arcane</button></div>
+
+        <div id="SE-elementChoicesDiv">
+            <div id="SE-elementChoices">
+                <button ng-repeat="element in (chosenElements | orderBy: 'element') track by $index" id="SE-elementChoice" ng-click="removeElement(element)" >
+                    {{element}}
+                </button>
+            </div>
+        </div>
+        <div id="SE-amountSelected">
+            <h3> {{chosenElements.length}} / 7 </h3>
+        </div>
+    </div>
+
+
+    <div id="SE-line">
+        <hr>
+    </div>
+
+
+    <div id="SE-elementInfo">
+        <div id="SE-elementTitle">
+            <h2>Elements explained</h2>
+        </div>
+
+        <div id="SE-elementWrapper2">
+            <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-fireButton" ng-click="explain('fire')">Fire</button></div>
+            <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-earthButton" ng-click="explain('earth')">Earth</button></div>
+            <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-waterButton" ng-click="explain('water')">Water</button></div>
+            <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-airButton" ng-click="explain('air')">Air</button></div>
+            <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-holyButton" ng-click="explain('holy')">Holy</button></div>
+            <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-darkButton" ng-click="explain('dark')">Dark</button></div>
+            <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-arcaneButton" ng-click="explain('arcane')">Arcane</button></div>
+        </div>
+
+        <div class="SE-elementExplained">
+            <p>{{elementInfo}}</p>
+        </div>
+
+
+        <div id="SE-elementCards">
+            <div class="SE-1StarCards">
+                <div class="CARD-cardBrowser-cards">
+                    <ul>
+                        <li class='CARD-main' data-ng-repeat="card in showCards" ng-show="card.class.level === 1"><img src={{card.imgPath}} alt="" />
+
+                            <div class="CARD-product-info">
+                                <h3 style="float:left">{{ card.name }}</h3>
+                                <h3 style="float:right">&#9734; {{card.class.level}}</h3>
+                            </div>
+
+                            <!--omschrijving-->
+                            <div class="CARD-product-desc">
+                                <div>
+                                    <div style="margin-left: 0px; height: 10px; width: 100%; margin-left: 1%;">
+                                        <div id="CARD-cardType">{{card.type}}</div>
+                                        <div id="CARD-cardRole">{{card.role}}</div>
+                                        <div id="CARD-cardElement">{{card.element}}</div>
+                                    </div>
+                                </div>
+                                <!--<p data-ng-repeat="abilities in card">Ability 1</p>-->
+                                <div style="margin-left: 5px;">
+                                    <p ng-repeat="ability in card.abilities">{{ability.type}}</p>
+                                </div>
+                                <!--<strong class="price"> ${{product.price}},-</strong> -->
+                            </div>
+
+
+
+                            <div class="CARD-card-stats">
+                                <!--<p style="float:right; margin-right:20px">+{{ card.manaGive }} -{{ card.manaCost }}</p>-->
+                                <div class="CARD-fabAttack">{{ card.power }}</div>
+                                <div class="CARD-fabHealth">{{ card.health }}</div>
+                                <div class="CARD-fabArmor">{{ card.armor }}</div>
+
+                                <!--<p style="float:left;">P{{ card.power }} H{{ card.health }} D{{ card.armor }}</p>-->
+                            </div>
+
+                            <button type="button" data-ng-click="addToDeckList(card)">Add to Deck</button>
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="SE-2StarCards">
+                <div class="CARD-cardBrowser-cards">
+                    <ul>
+                        <li class='CARD-main' data-ng-repeat="card in showCards" ng-show="card.class.level === 2"><img src={{card.imgPath}} alt="" />
+
+                            <div class="CARD-product-info">
+                                <h3 style="float:left">{{ card.name }}</h3>
+                                <h3 style="float:right">&#9734; {{card.class.level}}</h3>
+                            </div>
+
+                            <!--omschrijving-->
+                            <div class="CARD-product-desc">
+                                <div>
+                                    <div style="margin-left: 0px; height: 10px; width: 100%; margin-left: 1%;">
+                                        <div id="CARD-cardType">{{card.type}}</div>
+                                        <div id="CARD-cardRole">{{card.role}}</div>
+                                        <div id="CARD-cardElement">{{card.element}}</div>
+                                    </div>
+                                </div>
+                                <!--<p data-ng-repeat="abilities in card">Ability 1</p>-->
+                                <div style="margin-left: 5px;">
+                                    <p ng-repeat="ability in card.abilities">{{ability.type}}</p>
+                                </div>
+                                <!--<strong class="price"> ${{product.price}},-</strong> -->
+                            </div>
+
+
+
+                            <div class="CARD-card-stats">
+                                <!--<p style="float:right; margin-right:20px">+{{ card.manaGive }} -{{ card.manaCost }}</p>-->
+                                <div class="CARD-fabAttack">{{ card.power }}</div>
+                                <div class="CARD-fabHealth">{{ card.health }}</div>
+                                <div class="CARD-fabArmor">{{ card.armor }}</div>
+
+                                <!--<p style="float:left;">P{{ card.power }} H{{ card.health }} D{{ card.armor }}</p>-->
+                            </div>
+
+                            <button type="button" data-ng-click="addToDeckList(card)">Add to Deck</button>
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="SE-3StarCards">
+                <div class="CARD-cardBrowser-cards">
+                    <ul>
+                        <li class='CARD-main' data-ng-repeat="card in showCards" ng-show="card.class.level === 3"><img src={{card.imgPath}} alt="" />
+
+                            <div class="CARD-product-info">
+                                <h3 style="float:left">{{ card.name }}</h3>
+                                <h3 style="float:right">&#9734; {{card.class.level}}</h3>
+                            </div>
+
+                            <!--omschrijving-->
+                            <div class="CARD-product-desc">
+                                <div>
+                                    <div style="margin-left: 0px; height: 10px; width: 100%; margin-left: 1%;">
+                                        <div id="CARD-cardType">{{card.type}}</div>
+                                        <div id="CARD-cardRole">{{card.role}}</div>
+                                        <div id="CARD-cardElement">{{card.element}}</div>
+                                    </div>
+                                </div>
+                                <!--<p data-ng-repeat="abilities in card">Ability 1</p>-->
+                                <div style="margin-left: 5px;">
+                                    <p ng-repeat="ability in card.abilities">{{ability.type}}</p>
+                                </div>
+                                <!--<strong class="price"> ${{product.price}},-</strong> -->
+                            </div>
+
+
+
+                            <div class="CARD-card-stats">
+                                <!--<p style="float:right; margin-right:20px">+{{ card.manaGive }} -{{ card.manaCost }}</p>-->
+                                <div class="CARD-fabAttack">{{ card.power }}</div>
+                                <div class="CARD-fabHealth">{{ card.health }}</div>
+                                <div class="CARD-fabArmor">{{ card.armor }}</div>
+
+                                <!--<p style="float:left;">P{{ card.power }} H{{ card.health }} D{{ card.armor }}</p>-->
+                            </div>
+
+                            <button type="button" data-ng-click="addToDeckList(card)">Add to Deck</button>
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="SE-4StarCards">
+                <div class="CARD-cardBrowser-cards">
+                    <ul>
+                        <li class='CARD-main' data-ng-repeat="card in showCards" ng-show="card.class.level === 4"><img src={{card.imgPath}} alt="" />
+
+                            <div class="CARD-product-info">
+                                <h3 style="float:left">{{ card.name }}</h3>
+                                <h3 style="float:right">&#9734; {{card.class.level}}</h3>
+                            </div>
+
+                            <!--omschrijving-->
+                            <div class="CARD-product-desc">
+                                <div>
+                                    <div style="margin-left: 0px; height: 10px; width: 100%; margin-left: 1%;">
+                                        <div id="CARD-cardType">{{card.type}}</div>
+                                        <div id="CARD-cardRole">{{card.role}}</div>
+                                        <div id="CARD-cardElement">{{card.element}}</div>
+                                    </div>
+                                </div>
+                                <!--<p data-ng-repeat="abilities in card">Ability 1</p>-->
+                                <div style="margin-left: 5px;">
+                                    <p ng-repeat="ability in card.abilities">{{ability.type}}</p>
+                                </div>
+                                <!--<strong class="price"> ${{product.price}},-</strong> -->
+                            </div>
+
+
+
+                            <div class="CARD-card-stats">
+                                <!--<p style="float:right; margin-right:20px">+{{ card.manaGive }} -{{ card.manaCost }}</p>-->
+                                <div class="CARD-fabAttack">{{ card.power }}</div>
+                                <div class="CARD-fabHealth">{{ card.health }}</div>
+                                <div class="CARD-fabArmor">{{ card.armor }}</div>
+
+                                <!--<p style="float:left;">P{{ card.power }} H{{ card.health }} D{{ card.armor }}</p>-->
+                            </div>
+
+                            <button type="button" data-ng-click="addToDeckList(card)">Add to Deck</button>
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="SE-5StarCards">
+                <div class="CARD-cardBrowser-cards">
+                    <ul>
+                        <li class='CARD-main' data-ng-repeat="card in showCards" ng-show="card.class.level === 5"><img src={{card.imgPath}} alt="" />
+
+                            <div class="CARD-product-info">
+                                <h3 style="float:left">{{ card.name }}</h3>
+                                <h3 style="float:right">&#9734; {{card.class.level}}</h3>
+                            </div>
+
+                            <!--omschrijving-->
+                            <div class="CARD-product-desc">
+                                <div>
+                                    <div style="margin-left: 0px; height: 10px; width: 100%; margin-left: 1%;">
+                                        <div id="CARD-cardType">{{card.type}}</div>
+                                        <div id="CARD-cardRole">{{card.role}}</div>
+                                        <div id="CARD-cardElement">{{card.element}}</div>
+                                    </div>
+                                </div>
+                                <!--<p data-ng-repeat="abilities in card">Ability 1</p>-->
+                                <div style="margin-left: 5px;">
+                                    <p ng-repeat="ability in card.abilities">{{ability.type}}</p>
+                                </div>
+                                <!--<strong class="price"> ${{product.price}},-</strong> -->
+                            </div>
+
+
+
+                            <div class="CARD-card-stats">
+                                <!--<p style="float:right; margin-right:20px">+{{ card.manaGive }} -{{ card.manaCost }}</p>-->
+                                <div class="CARD-fabAttack">{{ card.power }}</div>
+                                <div class="CARD-fabHealth">{{ card.health }}</div>
+                                <div class="CARD-fabArmor">{{ card.armor }}</div>
+
+                                <!--<p style="float:left;">P{{ card.power }} H{{ card.health }} D{{ card.armor }}</p>-->
+                            </div>
+
+                            <button type="button" data-ng-click="addToDeckList(card)">Add to Deck</button>
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="SE-6StarCards">
+                <div class="CARD-cardBrowser-cards">
+                    <ul>
+                        <li class='CARD-main' data-ng-repeat="card in showCards" ng-show="card.class.level === 6"><img src={{card.imgPath}} alt="" />
+
+                            <div class="CARD-product-info">
+                                <h3 style="float:left">{{ card.name }}</h3>
+                                <h3 style="float:right">&#9734; {{card.class.level}}</h3>
+                            </div>
+
+                            <!--omschrijving-->
+                            <div class="CARD-product-desc">
+                                <div>
+                                    <div style="margin-left: 0px; height: 10px; width: 100%; margin-left: 1%;">
+                                        <div id="CARD-cardType">{{card.type}}</div>
+                                        <div id="CARD-cardRole">{{card.role}}</div>
+                                        <div id="CARD-cardElement">{{card.element}}</div>
+                                    </div>
+                                </div>
+                                <!--<p data-ng-repeat="abilities in card">Ability 1</p>-->
+                                <div style="margin-left: 5px;">
+                                    <p ng-repeat="ability in card.abilities">{{ability.type}}</p>
+                                </div>
+                                <!--<strong class="price"> ${{product.price}},-</strong> -->
+                            </div>
+
+
+
+                            <div class="CARD-card-stats">
+                                <!--<p style="float:right; margin-right:20px">+{{ card.manaGive }} -{{ card.manaCost }}</p>-->
+                                <div class="CARD-fabAttack">{{ card.power }}</div>
+                                <div class="CARD-fabHealth">{{ card.health }}</div>
+                                <div class="CARD-fabArmor">{{ card.armor }}</div>
+
+                                <!--<p style="float:left;">P{{ card.power }} H{{ card.health }} D{{ card.armor }}</p>-->
+                            </div>
+
+                            <button type="button" data-ng-click="addToDeckList(card)">Add to Deck</button>
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="SE-7StarCards">
+                <div class="CARD-cardBrowser-cards">
+                    <ul>
+                        <li class='CARD-main' data-ng-repeat="card in showCards" ng-show="card.class.level === 7"><img src={{card.imgPath}} alt="" />
+
+                            <div class="CARD-product-info">
+                                <h3 style="float:left">{{ card.name }}</h3>
+                                <h3 style="float:right">&#9734; {{card.class.level}}</h3>
+                            </div>
+
+                            <!--omschrijving-->
+                            <div class="CARD-product-desc">
+                                <div>
+                                    <div style="margin-left: 0px; height: 10px; width: 100%; margin-left: 1%;">
+                                        <div id="CARD-cardType">{{card.type}}</div>
+                                        <div id="CARD-cardRole">{{card.role}}</div>
+                                        <div id="CARD-cardElement">{{card.element}}</div>
+                                    </div>
+                                </div>
+                                <!--<p data-ng-repeat="abilities in card">Ability 1</p>-->
+                                <div style="margin-left: 5px;">
+                                    <p ng-repeat="ability in card.abilities">{{ability.type}}</p>
+                                </div>
+                                <!--<strong class="price"> ${{product.price}},-</strong> -->
+                            </div>
+
+
+
+                            <div class="CARD-card-stats">
+                                <!--<p style="float:right; margin-right:20px">+{{ card.manaGive }} -{{ card.manaCost }}</p>-->
+                                <div class="CARD-fabAttack">{{ card.power }}</div>
+                                <div class="CARD-fabHealth">{{ card.health }}</div>
+                                <div class="CARD-fabArmor">{{ card.armor }}</div>
+
+                                <!--<p style="float:left;">P{{ card.power }} H{{ card.health }} D{{ card.armor }}</p>-->
+                            </div>
+
+                            <button type="button" data-ng-click="addToDeckList(card)">Add to Deck</button>
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+</div>

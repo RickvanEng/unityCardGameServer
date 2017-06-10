@@ -1,0 +1,145 @@
+<div class="var-container">
+
+  <!--//filter-->
+
+  <div class="panel panel-blue w15">
+    <div class="panel-heading">
+      <h3 class="panel-title">Filter</h3>
+    </div>
+
+    <div class="panel-body">
+        <h4>Race</h4>
+        <div ng-repeat="race in races" id={{race.displayRace}} class="btn-M btn-M-lightGrey" style="margin-left: 2px;" ng-click="raceFilter(race)" ><p>{{race.race}}</p></div>
+
+        <h4 style="clear:both">Element</h4>
+        <div ng-repeat="element in elements" id={{element.element}} class="btn-M btn-M-lightGrey" style="margin-left: 2px;" ng-click="elementFilter(element.element)"><p>{{element.element}}</p></div>
+
+        <h4 style="clear:both">Type</h4>
+        <div ng-repeat="type in types" id={{type.type}} class="btn-M btn-M-lightGrey" style="margin-left: 2px;" ng-click="typeFilter(type.type)"><p>{{type.type}}</p></div>
+
+        <h4 style="clear:both">Role</h4>
+        <div ng-repeat="role in roles" id={{role.role}} class="btn-M btn-M-lightGrey" style="margin-left: 2px;" ng-click="roleFilter(role.role)"><p>{{role.role}}</div>
+    </div>
+  </div>
+
+  <!--place where all card are getting loaded-->
+  <div class="cardContainer w60">
+    <!-- here starts the card file, css -->
+    <div class="CARD-cardBrowser-cards" >
+      <ul>
+        <li class='CARD-main' data-ng-repeat="card in cards" data-ng-click="addToDeckList(card)"><img src={{card.imgPath}} alt="" />
+
+          <div class="CARD-product-info {{cardColor(card)}}">
+            <h3 style="float:left">{{ card.name }}</h3>
+            <h3 style="float:right">&#9734; {{card.class.level}}</h3>
+          </div>
+
+          <!--omschrijving-->
+          <div class="CARD-product-desc">
+            <div>
+              <div style="margin-left: 0px; height: 10px; width: 100%; margin-left: 1%;">
+                <div class="CARD-cardType">{{card.type}}</div>
+                <div class="CARD-cardRole">{{card.role}}</div>
+                <div class="CARD-cardElement {{cardColor(card)}}">{{card.element}}</div>
+              </div>
+            </div>
+            <!--<p data-ng-repeat="abilities in card">Ability 1</p>-->
+            <div style="margin-left: 5px;">
+              <p ng-repeat="ability in card.abilities">{{ability.type}}</p>
+            </div>
+            <!--<strong class="price"> ${{product.price}},-</strong> -->
+          </div>
+
+
+
+          <div class="CARD-card-stats {{cardColor(card)}}">
+            <!--<p style="float:right; margin-right:20px">+{{ card.manaGive }} -{{ card.manaCost }}</p>-->
+            <div class="CARD-fabAttack">{{ card.power }}</div>
+            <div class="CARD-fabHealth">{{ card.health }}</div>
+            <div class="CARD-fabArmor">{{ card.armor }}</div>
+
+            <!--<p style="float:left;">P{{ card.power }} H{{ card.health }} D{{ card.armor }}</p>-->
+          </div>
+
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!--data-ng-repeat="product in products = (products | orderBy: 'productName') track by $index" data-ng-show="product.productName != products[$index - 1].productName"-->
+      
+  <div class="panel panel-darkgrey w20" style="float: right">
+    <div class="panel-heading">
+      <h3 class="panel-title">Decks</h3>
+    </div>
+
+    <div class="panel-body"> </div>
+
+    <div id="loginCheck">
+      <p> please Log in first!</p>
+    </div>
+
+    <div id="loginHider">
+      <div id="currentDecks">
+        <button type="button" class="btn-deck btn-deck-default w100" ng-repeat="deck in playerDecks" data-ng-click="showDeckList(deck)">{{deck.deckName}} {{deck.cards.length}}/30</button>
+        <a href="#selectRace"><button type="button" id="addNewDeck" class="w100" >Create new Deck!</button></a>
+      </div>
+
+      
+      <h4 style="float:left; width:50%; background-color: #3e3f3a">Cards</h4>
+      <h4 style="float:right; width:50%; background-color: #3e3f3a">amount</h4>
+      
+
+      <div id="deckListFrame" style="display:none;">
+        <div id="holder" data-ng-repeat="card in (deckList | orderBy: 'name') track by $index" data-ng-show="card.name != (deckList | orderBy: 'name')[$index - 1].name">
+          <div id="card card-1" style="float:left; width: 80%;">
+            <button type="button" id="cardBrowser-cardButton" class="btn-M btn-M-default" style="width: 60%"data-ng-click="remove(card)">{{card.name}}</button>
+          </div>
+          <p style="float:right; margin-right:10px;">{{ getTotalAmount(card) }}</p>
+        </div>
+
+        <input type="text" id="iput-deckName" value="Deck name" style="margin-top:30px"></input>
+
+        <button type="button" data-ng-click="saveDeck()" style="margin-top: 10px;" class="btn-M btn-M-default">Save Deck</button>
+        <button type="button" data-ng-click="deleteDeck()" style="margin-top: 10px;" class="btn-M btn-M-default">Delete Deck</button>
+
+        <p type="text" id="" style="margin-top:5px">{{deckRace}}</p>
+
+        <p type="text" id="" ng-repeat="element in (deckElements | orderBy: 'name') track by $index" class="{{elementColor(element)}}" style="margin-top:5px; color: #fff">{{element.element}}</p>
+
+      </div>
+    </div>
+
+
+
+  </div>
+</div>
+
+<!--<div id="createDeckDiv">
+        <div id="createDeckFrame" style="width:1000; height:500; float:left;">
+            
+
+<div class="card" data-ng-repeat="card in cards">
+  <div class="wrapperInside">
+    <div class="imageWrapper">
+      <img src="/img/foto.jpg" style="width:100%; height:100%;"/>       
+    <div class="nameWrapper">
+      <p>{{card.race}}</p>
+    </div> 
+    <div class="priceWrapper" >
+      <h2>sss</h2>
+    </div> 
+    <div class="descriptionWrapper">
+      <p> Fire </p>
+    </div> 
+      <button id="addToDeck" data-ng-click="test()">Add card to deck</button>
+    </div>
+  </div>
+</div>
+
+        </div>
+    </div>-->
+
+<script>
+
+</script>
