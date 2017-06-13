@@ -1,8 +1,8 @@
 'use strict';
 
-var DBService = angular.module('DBService', ['ngCookies']);
+var DBService = angular.module('DBService', []);
 
-DBService.service('DB', ['$q', '$cookies', function ($q, $cookies) {
+DBService.service('DB', ['$q', function ($q) {
 
 
     //De enige socket in de file. Alles moet via deze socket worden geregeld.
@@ -70,8 +70,8 @@ DBService.service('DB', ['$q', '$cookies', function ($q, $cookies) {
         if (data.success) {
             console.log('log in succesfull');
             PlayerlogIn = true;
-            $cookies.loggedPlayer = String(data.name);
-            $cookies.loggedPassword = String(data.password);
+            // $cookies.loggedPlayer = String(data.name);
+            // $cookies.loggedPassword = String(data.password);
         }
     });
 
@@ -94,8 +94,8 @@ DBService.service('DB', ['$q', '$cookies', function ($q, $cookies) {
     socket.on('signOut', function (data) {
         console.log('Log out succesfull');
         PlayerlogIn = false;
-        delete $cookies["loggedPlayer"];
-        delete $cookies["loggedPassword"];
+        // delete $cookies["loggedPlayer"];
+        // delete $cookies["loggedPassword"];
     });
 
 

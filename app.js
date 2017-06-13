@@ -23,7 +23,7 @@ app.use('/', index);
 serv.listen(2000);
 console.log("server started");
 
-var currentPage = '#home';
+var currentPage = '';
 var deckBuildrdy = false;
 
 var SOCKET_LIST = [];
