@@ -19,6 +19,7 @@ module.exports.cardBrowser = function(err, res) {
 };
 
 module.exports.card = function(err, res) {
+    console.log('hij is in get card');
     res.sendFile(path.resolve('app_server/views/partials/card.html'));
 };
 

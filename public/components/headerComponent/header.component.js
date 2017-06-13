@@ -18,5 +18,4 @@
             templateUrl: '../components/headerComponent/header.component.html'
         };
     }
-
 }());

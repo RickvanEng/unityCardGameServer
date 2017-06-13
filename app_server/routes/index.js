@@ -3,7 +3,7 @@ var router = express.Router();
 var ctrlmain = require('../controllers/main');
 
 router.get('/',                     ctrlmain.index);
-router.get('/home',                 ctrlmain.home);
+// router.get('/home',                 ctrlmain.home);
 router.get('/deckBuilder',          ctrlmain.deckBuilder);
 router.get('/cardBrowser',          ctrlmain.cardBrowser);
 router.get('/card',                 ctrlmain.card);
