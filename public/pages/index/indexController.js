@@ -6,9 +6,9 @@
         .module('app')
         .controller('indexController', indexController);
 
-    indexController.$inject = ['$scope'];
+    indexController.$inject = [];
 
-    function indexController($scope) {
+    function indexController() {
 
         console.log('lolololol');
 

@@ -1,29 +1,26 @@
 <div class="var-container">
+    <header-component></header-component>
 
-    <div class="panel panel-blue w15">
-        <div class="panel-heading">
-            <h3 class="panel-title">Filter</h3>
-        </div>
-
-        <div class="panel-body">
-
-            <ul>
-                <li><button type="button" ng-click="buttonClick('Lore')">Lore</button></li>
-                <li><button type="button" ng-click="buttonClick('Rules')">Rules</button></li>
-                <li><a href="#playMenu"><button type="button">Play!</button></a></li>
-            </ul>
-
-        </div>
-    </div>
+    <div class="var-content" ng-controller="gameInfoController as infoCtrl">
 
 
 
-    <div class="One w60 border fLeft">
-        <div class="title">
-            <h1>{{title}}</h1>
 
-            <p>{{content}}</p>
 
+        <div class="One w70 center">
+            <div class="w20 center">
+                <button type="button" ng-click="infoCtrl.buttonClick('Rules')">Rules</button>
+                <button type="button" ng-click="infoCtrl.buttonClick('Lore')">Lore</button>
+            </div>
+
+            <hr>
+
+            <div class="mTop10">
+                <h1>{{infoCtrl.title}}</h1>
+
+                <p>{{infoCtrl.content}}</p>
+
+            </div>
         </div>
     </div>
 

@@ -1,0 +1,30 @@
+<div>
+    <img src={{$ctrl.card.imgPath}} alt="" />
+
+    <div class="CARD-product-info {{cardColor($ctrl.card)}}">
+        <h3 style="float:left">{{ $ctrl.card.name }}</h3>
+        <h3 style="float:right">&#9734; {{$ctrl.class.level}}</h3>
+    </div>
+
+    <div class="CARD-product-desc">
+        <div>
+            <div style="margin-left: 0px; height: 10px; width: 100%; margin-left: 1%;">
+                <div class="CARD-cardType">{{$ctrl.card.type}}</div>
+                <div class="CARD-cardRole">{{$ctrl.card.role}}</div>
+                <div class="CARD-cardElement {{cardColor($ctrl.card)}}">{{$ctrl.card.element}}</div>
+            </div>
+        </div>
+        <div style="margin-left: 5px;">
+            <p ng-repeat="ability in $ctrl.card.abilities">{{ability.type}}</p>
+        </div>
+    </div>
+
+
+
+    <div class="CARD-card-stats {{cardColor($ctrl.card)}}">
+        <div class="CARD-fabAttack">{{ $ctrl.card.power }}</div>
+        <div class="CARD-fabHealth">{{ $ctrl.card.health }}</div>
+        <div class="CARD-fabArmor">{{ $ctrl.card.armor }}</div>
+    </div>
+
+</div>

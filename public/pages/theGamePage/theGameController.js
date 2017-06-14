@@ -1,28 +1,28 @@
-var app = angular.module('myApp.theGameController', ['DBService']);
+(function () {
 
-app.controller('theGameController', ['$scope', 'DB',
-    function ($scope, DB) {
-        $scope.title;
-        $scope.content;
+    'use strict';
 
-        $scope.buttonClick = function (info) {
-            DB.getContent(info).then(function (data) {
-                $scope.title = data[0].title;
-                $scope.content = data[0].content;
+    angular
+        .module('app')
+        .controller('gameInfoController', gameInfoController);
+
+    gameInfoController.$inject = ['theGameService'];
+
+    function gameInfoController(gameService) {
+
+        console.log('gameInfoController Loaded');
+
+        var vm = this;
+
+        vm.title;
+        vm.content;
+
+        vm.buttonClick = function (info) {
+            gameService.getContent(info).then(function (data) {
+                vm.title = data[0].title;
+                vm.content = data[0].content;
             });
         };
-
-        // socket.on('getContentReturn', function(data) {
-        //      $scope.title = data[0].docName;
-        //      $scope.content = data[0].content;
-        //      $scope.$apply();
-        // });
-
-        // socket.emit('getPlayerDecks');
-
-        // socket.on('deck1', function(data) {
-
-        //});
-
     }
-]);
+
+}());

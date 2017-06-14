@@ -7,9 +7,18 @@
             $urlRouterProvider.otherwise("/home");
             // States
             $stateProvider
+
                 .state('home', {
                     url: '/home',
                     templateUrl: '../pages/homePage/home.html'
+                })
+                .state('theGame', {
+                    url: '/theGame',
+                    templateUrl: '../pages/theGamePage/theGameInfo.html'
+                })
+                .state('cardBrowser', {
+                    url: '/cardBrowser',
+                    templateUrl: '../pages/cardBrowserPage/cardBrowser.html'
                 })
 
                 .state('home.home1', {

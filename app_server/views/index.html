@@ -4,8 +4,10 @@
 <head>
 
 	<link rel="stylesheet" href="css/index.css" type="text/css" media="all" />
-	<link rel="stylesheet" href="css/card.css" type="text/css" media="all" />
 	<link rel="stylesheet" href="css/panels.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="components/cardComponent/card.css" type="text/css" media="all" />
+
+	<link href="css/hover.css" rel="stylesheet" media="all">
 
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -17,18 +19,32 @@
 
 	<!-- components -->
 	<script src="components/headerComponent/header.component.js" type="text/javascript"></script>
+	<script src="components/cardComponent/card.component.js" type="text/javascript"></script>
 
 	<!--controllers-->
 	<script src="pages/index/indexController.js" type="text/javascript"></script>
 	<script src="pages/homePage/homeController.js" type="text/javascript"></script>
+	<script src="pages/theGamePage/theGameController.js" type="text/javascript"></script>
+
+	<script src="pages/cardBrowserPage/cardDecklistController.js" type="text/javascript"></script>
+	<script src="pages/cardBrowserPage/cardFilterController.js" type="text/javascript"></script>
+	<script src="pages/cardBrowserPage/cardContentController.js" type="text/javascript"></script>
+
+	<!--services-->
+	<script src="app/DBService.js" type="text/javascript"></script>
+	<script src="pages/cardBrowserPage/cardBrowserService.js" type="text/javascript"></script>
 
 
 
-	<!--<script src="js/DBService.js" type="text/javascript"></script>
+	<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="/js/Chat.js"></script>
+
+	<!--
 	
 	<script src="js/playMenuController.js" type="text/javascript"></script>
-	<script src="theGamePage/theGameController.js" type="text/javascript"></script>
-	<script src="cardBrowserPage/cardBrowserController.js" type="text/javascript"></script>
+	
+	
 	<script src="js/selectraceController.js" type="text/javascript"></script>
 	<script src="js/selectElementController.js" type="text/javascript"></script>
 	<script src="js/gameWindowController.js" type="text/javascript"></script>
@@ -43,17 +59,8 @@
 </head>
 
 <body ng-app="app">
-
-	<h1> Index </h1>
-
-	<my-input></my-input>
-
-	<div ui-view></div>
+	<div ui-view class="mainContentContainer"></div>
 	<!--<div class="INDEX-content" data-ng-view=""></div>-->
-
-	<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-	<script src="/js/Chat.js"></script>
 </body>
 
 </html>

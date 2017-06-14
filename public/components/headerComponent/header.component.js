@@ -3,9 +3,9 @@
 
     angular
         .module('app')
-        .component('myInput', myInput());
+        .component('headerComponent', headerComponent());
 
-    function myInput() {
+    function headerComponent() {
         return {
             bindings: {
                 // nameLabel: '@',
