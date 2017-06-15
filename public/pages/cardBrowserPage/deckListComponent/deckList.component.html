@@ -1,0 +1,37 @@
+<div class="panel panel-darkgrey w20" style="float: right">
+    <div class="panel-heading">
+        <h3 class="panel-title">Decks</h3>
+    </div>
+
+    <div class="panel-body"> </div>
+
+    <div id="currentDecks">
+        <button type="button" class="btn-deck btn-deck-default w100" ng-repeat="deck in playerDecks" data-ng-click="showDeckList(deck)">{{deck.deckName}} {{deck.cards.length}}/30</button>
+        <a ui-sref="createDeck.selectRace"><button type="button" id="addNewDeck" class="w100" >Create new Deck!</button></a>
+    </div>
+
+    <h4 style="float:left; width:50%; background-color: #3e3f3a">Cards</h4>
+    <h4 style="float:right; width:50%; background-color: #3e3f3a">amount</h4>
+
+
+    <div id="deckListFrame">
+        <div id="holder" data-ng-repeat="card in (deckList | orderBy: 'name') track by $index" data-ng-show="card.name != (deckList | orderBy: 'name')[$index - 1].name">
+            <div id="card card-1" style="float:left; width: 80%;">
+                <button type="button" id="cardBrowser-cardButton" class="btn-M btn-M-default" style="width: 60%" data-ng-click="remove(card)">{{card.name}}</button>
+            </div>
+            <p style="float:right; margin-right:10px;">{{ getTotalAmount(card) }}</p>
+        </div>
+
+        <input type="text" id="iput-deckName" value="Deck name" style="margin-top:30px"></input>
+
+        <button type="button" data-ng-click="saveDeck()" style="margin-top: 10px;" class="btn-M btn-M-default">Save Deck</button>
+        <button type="button" data-ng-click="deleteDeck()" style="margin-top: 10px;" class="btn-M btn-M-default">Delete Deck</button>
+
+        <p type="text" id="" style="margin-top:5px">{{deckRace}}</p>
+
+        <p type="text" id="" ng-repeat="element in (deckElements | orderBy: 'name') track by $index" class="{{elementColor(element)}}"
+            style="margin-top:5px; color: #fff">{{element.element}}</p>
+
+    </div>
+
+</div>

@@ -12,7 +12,7 @@
 .CARD-product-info h3{ color:#fff; padding:9px; font-size: 10px;}
 /*.product-info h4{ font-weight: normal;}
 .product-info p{ font-size:16px; line-height:18px; text-transform: uppercase; font-weight: bold; color:#000; padding:5px 0 7px 0;}*/
-.CARD-product-desc{ position:absolute; padding:0px; background:url(img/info.png); width:150px; top:130px; height:70px;}
+.CARD-product-desc{ position:absolute; padding:0px; width:150px; top:130px; height:70px;}
 
 .CARD-cardType {background-color: #9e711c; border: 1px solid #b78a35; float: left; width: 31%; height: 100%; text-align: center; color: white; font-size: 10px; line-height: 11px;}
 

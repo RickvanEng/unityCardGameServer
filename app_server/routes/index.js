@@ -7,7 +7,7 @@ router.get('/',                     ctrlmain.index);
 router.get('/deckBuilder',          ctrlmain.deckBuilder);
 router.get('/cardBrowser',          ctrlmain.cardBrowser);
 router.get('/card',                 ctrlmain.card);
-router.get('/theGameInfo',          ctrlmain.theGameInfo);
+// router.get('/theGameInfo',          ctrlmain.theGameInfo);
 router.get('/playMenu',             ctrlmain.playMenu);
 router.get('/gameWindow',           ctrlmain.gameWindow);
 router.get('/selectRace',           ctrlmain.selectRace);

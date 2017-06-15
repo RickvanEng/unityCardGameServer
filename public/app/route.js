@@ -20,6 +20,20 @@
                     url: '/cardBrowser',
                     templateUrl: '../pages/cardBrowserPage/cardBrowser.html'
                 })
+                .state('createDeck', {
+                    url: '/createDeck',
+                    templateUrl: '../pages/createDeckPage/createDeckMainPage.html'
+                })
+                .state('createDeck.selectRace', {
+                    url: '/selectRace',
+                    templateUrl: 'pages/createDeckPage/partials/selectRace.html'
+                })
+                .state('createDeck.selectElement', {
+                    url: '/selectElement',
+                    templateUrl: 'pages/createDeckPage/partials/selectElement.html'
+                })
+
+                
 
                 .state('home.home1', {
                     url: '/home1',

@@ -1,0 +1,142 @@
+<div class="SE-main" ng-controller="selectElementController as elementCtrl">
+    <div id="SE-headerDiv">
+        <div id="SE-backButtonDiv">
+            <a ui-sref="createDeck.selectRace">
+                <img src="../../img/next.png"/ style="height: 100%; transform: rotate(180deg);"/>
+            </a>
+        </div>
+
+        <div id="SE-nextButtonDiv">
+            <a href="#cardBrowser">
+                <img src="../../img/next.png"/ style="height: 100%;"/>
+            </a>
+        </div>
+
+        <div id="SE-titleDiv">
+            <h1>Select Elements</h1>
+        </div>
+    </div>
+
+    <div id="SE-elementWrapper">
+        <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-fireButton" ng-click="elementCtrl.addElement('fire')">Fire</button></div>
+        <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-earthButton" ng-click="elementCtrl.addElement('earth')">Earth</button></div>
+        <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-waterButton" ng-click="elementCtrl.addElement('water')">Water</button></div>
+        <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-airButton" ng-click="elementCtrl.addElement('air')">Air</button></div>
+        <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-holyButton" ng-click="elementCtrl.addElement('holy')">Holy</button></div>
+        <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-darkButton" ng-click="elementCtrl.addElement('dark')">Dark</button></div>
+        <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-arcaneButton" ng-click="elementCtrl.addElement('arcane')">Arcane</button></div>
+
+        <div id="SE-elementChoicesDiv">
+            <div id="SE-elementChoices">
+                <button ng-repeat="element in (elementCtrl.chosenElements | orderBy: 'element') track by $index" id="SE-elementChoice" ng-click="elementCtrl.removeElement(element)">
+                    {{element}}
+                </button>
+            </div>
+        </div>
+        <div id="SE-amountSelected">
+            <h3> {{elementCtrl.chosenElements.length}} / 7 </h3>
+        </div>
+    </div>
+
+
+    <div id="SE-line">
+        <hr>
+    </div>
+
+
+    <div id="SE-elementInfo">
+        <div id="SE-elementTitle">
+            <h2>Elements explained</h2>
+        </div>
+
+        <div id="SE-elementWrapper2">
+            <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-fireButton" ng-click="elementCtrl.explain('fire')">Fire</button></div>
+            <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-earthButton" ng-click="elementCtrl.explain('earth')">Earth</button></div>
+            <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-waterButton" ng-click="elementCtrl.explain('water')">Water</button></div>
+            <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-airButton" ng-click="elementCtrl.explain('air')">Air</button></div>
+            <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-holyButton" ng-click="elementCtrl.explain('holy')">Holy</button></div>
+            <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-darkButton" ng-click="elementCtrl.explain('dark')">Dark</button></div>
+            <div id="SE-ElementDiv"><button class="SE-elementButton" id="SE-arcaneButton" ng-click="elementCtrl.explain('arcane')">Arcane</button></div>
+        </div>
+
+        <div class="SE-elementExplained">
+            <p>{{elementCtrl.elementInfo}}</p>
+        </div>
+
+
+
+
+        <div id="SE-elementCards">
+            <div class="SE-1StarCards">
+                <div class="CARD-cardBrowser-cards">
+                    <ul>
+                        <li class=' hvr-grow-shadow' data-ng-repeat="card in elementCtrl.showCards" ng-show="card.class.level === 1">
+                            <card-component card='card' class="CARD-main" ></card-component>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="SE-2StarCards">
+                <div class="CARD-cardBrowser-cards">
+                    <ul>
+                        <li class=' hvr-grow-shadow' data-ng-repeat="card in elementCtrl.showCards" ng-show="card.class.level === 2">
+                            <card-component card='card' class="CARD-main" ></card-component>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="SE-3StarCards">
+                <div class="CARD-cardBrowser-cards">
+                    <ul>
+                        <li class=' hvr-grow-shadow' data-ng-repeat="card in elementCtrl.showCards" ng-show="card.class.level === 3">
+                            <card-component card='card' class="CARD-main" ></card-component>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="SE-4StarCards">
+                <div class="CARD-cardBrowser-cards">
+                    <ul>
+                        <li class=' hvr-grow-shadow' data-ng-repeat="card in elementCtrl.showCards" ng-show="card.class.level === 4">
+                            <card-component card='card' class="CARD-main" ></card-component>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="SE-5StarCards">
+                <div class="CARD-cardBrowser-cards">
+                    <ul>
+                        <li class=' hvr-grow-shadow' data-ng-repeat="card in elementCtrl.showCards" ng-show="card.class.level === 5">
+                            <card-component card='card' class="CARD-main" ></card-component>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="SE-6StarCards">
+                <div class="CARD-cardBrowser-cards">
+                    <ul>
+                        <li class=' hvr-grow-shadow' data-ng-repeat="card in elementCtrl.showCards" ng-show="card.class.level === 6">
+                            <card-component card='card' class="CARD-main" ></card-component>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="SE-7StarCards">
+                <div class="CARD-cardBrowser-cards">
+                    <ul>
+                        <li class=' hvr-grow-shadow' data-ng-repeat="card in elementCtrl.showCards" ng-show="card.class.level === 7">
+                            <card-component card='card' class="CARD-main" ></card-component>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

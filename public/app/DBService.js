@@ -60,6 +60,15 @@
             return deferred.promise;
         }
 
+        this.requestLores = function () {            
+            var deferred = $q.defer();
+            socket.emit('getLores');
+            socket.on('getLoresReturn', function (data) {
+                deferred.resolve(data);
+            });
+            return deferred.promise;
+        }
+
         this.requestCards = function () {
             var deferred = $q.defer();
             socket.emit('loadDBCards');

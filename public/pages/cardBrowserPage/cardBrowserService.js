@@ -15,9 +15,19 @@
 
         var allCards;
         var filter = [];
+        vm.loggedPlayer = 'Rick';
 
 
         // functions that get data from server. 
+
+        vm.getLoggedPlayer = function () {
+            if (vm.loggedPlayer === '') {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
         vm.requestTypes = function () {
             var deferred = $q.defer();
             DBService.requestTypes().then(function (data) {
@@ -34,7 +44,7 @@
             return deferred.promise;
         }
 
-         vm.requestRaces = function () {
+        vm.requestRaces = function () {
             var deferred = $q.defer();
             DBService.requestRaces().then(function (data) {
                 deferred.resolve(data);
@@ -67,6 +77,8 @@
         vm.getFilter = function() {
             return filter;
         }
+
+        
 
         // this.requestRoles = function () {
         //     var deferred = $q.defer();
