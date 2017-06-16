@@ -68,8 +68,10 @@ module.exports.getCardClassElement = function (elementId, cb) {
 
 module.exports.isValidPassword = function (data, cb) {
     db.players.find({ username: data.username, password: data.password }, function (err, res) {
-        if (res.length > 0)
+        if (res.length > 0) {
+            console.log(res);
             cb(true);
+        }
         else
             cb(false);
     });

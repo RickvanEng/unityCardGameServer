@@ -1,5 +1,5 @@
 <div id="INDEXHEADER" class="INDEX-header">
-    
+
     <div class="INDEX-logoDiv"></div>
     <div class="INDEX-navigation">
         <ul>
@@ -18,18 +18,17 @@
             </div>
 
             <div class="" style="width: 150px; float: left;">
-                <input id="signDiv-username" type="text"></input>
-                <input id="signDiv-password" type="password"></input>
+                <input id="name" ng-model="name" type="text"></input>
+                <input id="password" ng-model="password" type="password"></input>
             </div>
 
             <div style="float: left; width: 150px;">
-                <button id="signDiv-signIn" class="btn-M btn-M-default">Sign In</button>
-                <button id="signDiv-signUp" class="btn-M btn-M-default">Sign Up</button>
-                <button id="signDivSignOut" class="btn-M btn-M-default">Sign Out</button>
+                <button class="btn-M btn-M-default" ng-click="$ctrl.signIn({ name: name, password: password })">Sign In</button>
+                <button class="btn-M btn-M-default" ng-click="$ctrl.signUp()">Sign Up</button>
+                <button class="btn-M btn-M-default" ng-click="$ctrl.signOut()">Sign Out</button>
             </div>
         </form>
     </div>
-
 </div>
 
 <!--<label for="name">{{ $ctrl.nameLabel }}</label>

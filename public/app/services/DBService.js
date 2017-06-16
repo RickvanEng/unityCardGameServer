@@ -14,6 +14,9 @@
         //De enige socket in de file. Alles moet via deze socket worden geregeld.
         var socket = io();
 
+        var vm = this;
+        vm.loggedPlayer;
+
         // var chat = io.connect('http://localhost/2000/chat');
         // var news = io.connect('http://localhost/2000/news');
 
@@ -23,6 +26,21 @@
         //hierin word de data geladen van de server dmv van functions later in deze service. getters en setters staan ook onderaan.
         var cards = [];
         var decks = [];
+
+        vm.login = function(name, password) {
+            console.log(name, password);
+            socket.emit('signIn', { username: name, password: password });
+        }
+
+        socket.on('signIn', function (data) {
+            console.log('4');
+            if (data.success) {
+                console.log('log in succesfull');
+                vm.loggedPlayer = true;
+                // $cookies.loggedPlayer = String(data.name);
+                // $cookies.loggedPassword = String(data.password);
+            }
+        });
 
         this.requestTypes = function () {
             var deferred = $q.defer();
@@ -114,46 +132,7 @@
 
         this.getNewDeck = function (data) {
             return newDeck;
-        }
-
-        //Log in, Sign in en Log out functions
-        this.signIn = function (data) {
-            socket.emit('signIn', { username: data.username, password: data.password });
-        }
-
-        socket.on('signIn', function (data) {
-            console.log('in sign in ding');
-            if (data.success) {
-                console.log('log in succesfull');
-                PlayerlogIn = true;
-                // $cookies.loggedPlayer = String(data.name);
-                // $cookies.loggedPassword = String(data.password);
-            }
-        });
-
-        this.signUp = function (data) {
-            console.log('signing Up');
-            socket.emit('signUp', { username: data.username, password: data.password });
-        }
-
-        socket.on('signUp', function (data) {
-            if (data.success) {
-                console.log('Sign up succesfull');
-            }
-        });
-
-        this.signOut = function (data) {
-            console.log('signing Out');
-            socket.emit('signOut');
-        }
-
-        socket.on('signOut', function (data) {
-            console.log('Log out succesfull');
-            PlayerlogIn = false;
-            // delete $cookies["loggedPlayer"];
-            // delete $cookies["loggedPassword"];
-        });
-
+        }        
 
         //chat function
         this.sendMessage = function (message) {

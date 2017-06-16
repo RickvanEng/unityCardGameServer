@@ -8,12 +8,10 @@
     function headerComponent() {
         return {
             bindings: {
-                // nameLabel: '@',
-                // namePlaceholder: '@',
-                // ageLabel: '@',
-                // agePlaceholder: '@',
-                // onClick: '&',
-                // blaVar: '@'
+                signIn: '&',
+                signUp: '&',
+                signOut: '&',
+                var: '<'
             },
             templateUrl: '../components/headerComponent/header.component.html'
         };

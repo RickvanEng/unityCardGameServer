@@ -111,6 +111,8 @@ io.sockets.on('connection', function (socket) {
 
     //Inloggen
     socket.on('signIn', function (data) {
+        console.log(data.password);
+        console.log('hallllll')
         //hij kijkt of de naam en pass matchen in DB.
         dao.isValidPassword(data, function (res) {
             if (res) {

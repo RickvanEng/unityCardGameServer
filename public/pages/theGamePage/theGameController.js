@@ -6,9 +6,9 @@
         .module('app')
         .controller('gameInfoController', gameInfoController);
 
-    gameInfoController.$inject = ['theGameService'];
+    gameInfoController.$inject = [];
 
-    function gameInfoController(gameService) {
+    function gameInfoController() {
 
         console.log('gameInfoController Loaded');
 
@@ -17,12 +17,12 @@
         vm.title;
         vm.content;
 
-        vm.buttonClick = function (info) {
-            gameService.getContent(info).then(function (data) {
-                vm.title = data[0].title;
-                vm.content = data[0].content;
-            });
-        };
+        // vm.buttonClick = function (info) {
+        //     gameService.getContent(info).then(function (data) {
+        //         vm.title = data[0].title;
+        //         vm.content = data[0].content;
+        //     });
+        // };
     }
 
 }());

@@ -48,11 +48,5 @@
                     url: '/home2',
                     template: '<my-input></my-input>'
                 })
-
-
-                .state('card', {
-                    url: '/card',
-                    template: 'card'
-                });
         });
 })();

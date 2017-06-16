@@ -1,12 +1,10 @@
 var path = require('path');
 
 module.exports.index = function(err, res) {
-    console.log('hij is in get index');
     res.sendFile(path.resolve('app_server/views/index.html'));
 };
 
 module.exports.home = function(err, res) {
-    console.log('hij is in get home');
     res.sendFile(path.resolve('app_server/views/partials/home.html'));
 };
 
@@ -19,7 +17,6 @@ module.exports.cardBrowser = function(err, res) {
 };
 
 module.exports.card = function(err, res) {
-    console.log('hij is in get card');
     res.sendFile(path.resolve('app_server/views/partials/card.html'));
 };
 

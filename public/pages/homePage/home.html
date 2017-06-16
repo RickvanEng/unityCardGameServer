@@ -1,6 +1,12 @@
 <div class="var-container">
-    <header-component></header-component>
-
+    <div ng-controller="loginController as loginCtrl">
+        <header-component
+            sign-in="loginCtrl.signIn(name, password)"
+            sign-up="loginCtrl.signUp()"
+            sign-out="loginCtrl.signOut()"
+            var="loginCtrl.testVar">
+        </header-component>
+    </div>
 
     <!--<my-input></my-input>-->
 
