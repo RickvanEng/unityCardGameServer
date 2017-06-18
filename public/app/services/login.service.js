@@ -11,12 +11,23 @@
     function loginService($q, DB, $http) {
 
         var vm = this;
+        vm.loggedPlayer;
 
         vm.loggedPlayer = DB.loggedPlayer;
 
         vm.login = function(name, password) {
-            console.log('2');
-            DB.login(name, password);
+            var player = {
+                'name': name,
+                'password': password
+            }
+
+            $http.post('/userCheck', player)
+                .then(function successCallback(res) {
+                    console.log('hij komt terug! '  + res.data.value);
+                    vm.loggedPlayer = res.data.value;
+                }, function errorCallback(error) {
+                    console.log(error);
+                });
         }
     }
 

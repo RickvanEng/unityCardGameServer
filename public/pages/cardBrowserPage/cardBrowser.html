@@ -1,8 +1,13 @@
 <div class="var-container">
 
-  <div>
-    <header-component></header-component>
-  </div>
+  <div ng-controller="loginController as loginCtrl">
+        <header-component
+            sign-in="loginCtrl.signIn(name, password)"
+            sign-up="loginCtrl.signUp()"
+            sign-out="loginCtrl.signOut()"
+            var="loginCtrl.testVar">
+        </header-component>
+    </div>
 
   <div>
     <!--filter panel-->

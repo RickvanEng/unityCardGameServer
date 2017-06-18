@@ -1,7 +1,27 @@
+var request = require('request');
 var path = require('path');
+var dao = require("../modules/dao.js");
+
+var sendResponse = function (res, status, content) {
+    res.status(status);
+    res.json(content);
+}
 
 module.exports.index = function(err, res) {
     res.sendFile(path.resolve('app_server/views/index.html'));
+};
+
+module.exports.userCheck = function(req, res) {
+    dao.isValidPassword(req.body, function(res1) {
+        if (res1) {
+            console.log('player matched');
+            sendResponse(res, 200, { "status": "succes", "value": req.body.name });
+        } else {
+            console.log('no match');
+            sendResponse(res, 200, { "status": "succes", "value": 'boe' });
+        }
+    })
+    
 };
 
 module.exports.home = function(err, res) {

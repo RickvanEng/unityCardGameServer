@@ -15,7 +15,7 @@
         var socket = io();
 
         var vm = this;
-        vm.loggedPlayer;
+        vm.loggedPlayer = '';
 
         // var chat = io.connect('http://localhost/2000/chat');
         // var news = io.connect('http://localhost/2000/news');
@@ -26,21 +26,6 @@
         //hierin word de data geladen van de server dmv van functions later in deze service. getters en setters staan ook onderaan.
         var cards = [];
         var decks = [];
-
-        vm.login = function(name, password) {
-            console.log(name, password);
-            socket.emit('signIn', { username: name, password: password });
-        }
-
-        socket.on('signIn', function (data) {
-            console.log('4');
-            if (data.success) {
-                console.log('log in succesfull');
-                vm.loggedPlayer = true;
-                // $cookies.loggedPlayer = String(data.name);
-                // $cookies.loggedPassword = String(data.password);
-            }
-        });
 
         this.requestTypes = function () {
             var deferred = $q.defer();
