@@ -33,7 +33,7 @@ module.exports.updateDeck = function (req, resMain) {
     //console.log('cards van het deck dat binnenkomt: ' + JSON.stringify(req.body.deck.cards));
     // console.log(req.body.deck);
     // console.log(req.body.deck.deckName);
-    console.log(req.body.deck._id);
+    console.log('incoming deck: '  + req.body.deck);
     var deckCards = [];
     for (var i = 0; i < req.body.deck.cards.length; i++) {
         deckCards.push(req.body.deck.cards[i]._id);

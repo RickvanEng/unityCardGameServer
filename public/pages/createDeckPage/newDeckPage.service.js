@@ -26,6 +26,7 @@
 
         vm.saveDeck = function () {
             console.log('saveDeck')
+            console.log(vm.newDeck)
             return $http.post('/saveDeck', { 'deck': vm.newDeck });
         };
     }

@@ -37,12 +37,20 @@
             vm.lores = data[0].lores;
         });
 
+        vm.setName = function () {
+            console.log('yes')
+            newDeckService.newDeck.deckName = vm.deckName;
+        }
+        
+
         vm.selectRace = function (race) {
 
             newDeckService.newDeck.race = race._id;
             newDeckService.newDeck.deckOwner = logService.loggedPlayer;
-            newDeckService.newDeck.deckName = vm.deckName;
+            
             newDeckService.deckBuilder = true;
+
+            
 
             for (var i = 0; i < vm.lores.length; i++) {
                 if (vm.lores[i].race === race.race) {
@@ -60,8 +68,6 @@
                 }
             }
         };
-
-
 
         // $scope.races;
 

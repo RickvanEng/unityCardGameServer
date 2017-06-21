@@ -6,11 +6,14 @@
             <a ui-sref="createDeck.selectElement">
                 <img src="../../img/next.png"/ style="height: 100%; "/>
             </a>
-            
+
         </div>
 
         <div id="SR-titleDiv">
-            <input placeholder="Please fill in a deck name" ng-model="raceCtrl.deckName"/>
+            <form>
+                <input placeholder="Please fill in a deck name" ng-model="raceCtrl.deckName"/>
+                <button ng-click="raceCtrl.setName()">Chose name</button>
+            </form>
         </div>
     </div>
 

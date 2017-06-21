@@ -30,8 +30,6 @@
 
         var deckID;
 
-
-
         init();
         function init() {
             cardBrowserService.requestTypes().then(function (data) {
@@ -58,11 +56,6 @@
             cardBrowserService.requestCards().then(function (data1) {
                 vm.showCards = data1;
             });
-
-            if (newDeckService.deckBuilder) {
-                vm.cardList = newDeckService.newDeck.cards;
-                vm.deckName = newDeckService.newDeck.deckName;
-            }
 
         };
 
@@ -173,7 +166,7 @@
                 }
             }
 
-            
+
 
             cardBrowserService.saveDeck(deckToSave).then(function (data) {
                 console.log('data saved');
