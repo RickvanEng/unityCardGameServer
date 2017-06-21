@@ -193,34 +193,7 @@ io.sockets.on('connection', function (socket) {
 
     //Saves the deck. Checks if name already exists, if not, it makes a new deck.
     socket.on('saveDeck', function (data) {
-        var cardList = [];
-        for (var i = 0; i < data.deckList.length; i++) {
-            cardList.push(data.deckList[i]._id);
-        }
 
-        db.decks.find({ "_id": ObjectId(data.deckId) }, function (err, res) {
-            if (res) {
-                //console.log(res);
-                db.decks.update({ "_id": ObjectId(data.deckId) }, { $set: { deckName: data.deckName } }, { multi: true }, function (err, res) {
-                    db.decks.update({ "_id": ObjectId(data.deckId) }, { $set: { cards: cardList } }, { multi: true }, function (err, res) {
-                        db.decks.find({ "_id": ObjectId(data.deckId) }, function (err, res) {
-                            var array = [];
-                            async.forEach(res[0].cards, function (item, callback) {
-                                dao.getDecksCardsFromDB(item, function (card) {
-                                    //console.log(card);
-                                    array.push(card[0]);
-                                    callback();
-                                });
-                                //Stuur het hele object terug naar de controller.
-                            }, function () {
-                                res[0].cards = array;
-                                socket.emit('saveDeckReturn', res[0]);
-                            });
-                        });
-                    });
-                });
-            }
-        });
     });
 
     //Check is deck exists. If it exists it updates the deck values with the new info.

@@ -3,11 +3,11 @@
 
     angular
         .module('app')
-        .service('cardBrowserService', cardBrowserService);
+        .service('cardBrowserService', cardBrowserService, );
 
-    cardBrowserService.$inject = ['$q', 'DBConnectionService'];
+    cardBrowserService.$inject = ['$q', '$http', 'DBConnectionService', 'loginService'];
 
-    function cardBrowserService($q, DBService) {
+    function cardBrowserService($q, $http, DBService, logService) {
 
         console.log('cardbrowser service loaded');
 
@@ -15,18 +15,8 @@
 
         var allCards;
         var filter = [];
-        vm.loggedPlayer = 'Rick';
-
 
         // functions that get data from server. 
-
-        vm.getLoggedPlayer = function () {
-            if (vm.loggedPlayer === '') {
-                return false;
-            } else {
-                return true;
-            }
-        }
 
         vm.requestTypes = function () {
             var deferred = $q.defer();
@@ -36,7 +26,7 @@
             return deferred.promise;
         }
 
-         vm.requestRoles = function () {
+        vm.requestRoles = function () {
             var deferred = $q.defer();
             DBService.requestRoles().then(function (data) {
                 deferred.resolve(data);
@@ -52,7 +42,7 @@
             return deferred.promise;
         }
 
-         vm.requestElements = function () {
+        vm.requestElements = function () {
             var deferred = $q.defer();
             DBService.requestElements().then(function (data) {
                 deferred.resolve(data);
@@ -68,67 +58,13 @@
             return deferred.promise;
         }
 
-        vm.setFilter = function(para1, para2) {
-            filter[0] = para1;
-            filter[1] = para2;
-            console.log('nieuwe filter = ' + filter[0] + ' ' + filter[1]);
+        vm.requestDecks = function (user) {
+            return $http.post('/getUserDecks', {name: user});
         }
 
-        vm.getFilter = function() {
-            return filter;
+        vm.saveDeck = function (deck) {
+            return $http.post('/updateDeck', {'deck': deck});
         }
-
-        
-
-        // this.requestRoles = function () {
-        //     var deferred = $q.defer();
-        //     socket.emit('getRoles');
-        //     socket.on('getRolesReturn', function (data) {
-        //         deferred.resolve(data);
-        //     });
-        //     return deferred.promise;
-        // }
-
-        // this.requestElements = function () {
-        //     var deferred = $q.defer();
-        //     socket.emit('getElements');
-        //     socket.on('getElementsReturn', function (data) {
-        //         deferred.resolve(data);
-        //     });
-        //     return deferred.promise;
-        // }
-
-        // this.requestRaces = function () {
-        //     var deferred = $q.defer();
-        //     socket.emit('getRaces');
-        //     socket.on('getRacesReturn', function (data) {
-        //         deferred.resolve(data);
-        //     });
-        //     return deferred.promise;
-        // }
-
-        // //TODO: if player is logged in, request decks.
-        // this.requestDecks = function () {
-        //     console.log('get Decks van player');
-        //     var deferred = $q.defer();
-        //     socket.emit('getPlayerDecks');
-        //     socket.on('deckReturn', function (data) {
-        //         deferred.resolve(data);
-        //     });
-        //     return deferred.promise;
-        // }
-
-        // this.requestCards = function () {
-        //     var deferred = $q.defer();
-        //     socket.emit('loadDBCards');
-        //     socket.on('loadDBCards-return', function (data) {
-        //         types = data;
-        //         deferred.resolve(data);
-        //     });
-        //     return deferred.promise;
-        // }
-
-        
 
     }
 }());

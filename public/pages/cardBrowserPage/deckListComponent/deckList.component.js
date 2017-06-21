@@ -8,7 +8,8 @@
     function decklistComponent() {
         return {
             bindings: {
-                // nameLabel: '@',
+                decks: '<',
+                showDeckList: '&'
                 // namePlaceholder: '@',
                 // ageLabel: '@',
                 // agePlaceholder: '@',

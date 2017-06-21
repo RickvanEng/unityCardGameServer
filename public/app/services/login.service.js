@@ -11,9 +11,9 @@
     function loginService($q, DB, $http) {
 
         var vm = this;
-        vm.loggedPlayer;
-
-        vm.loggedPlayer = DB.loggedPlayer;
+        
+        //zet dit naar '' als klaar bent met testen
+        vm.loggedPlayer = 'Rick';
 
         vm.login = function(name, password) {
             var player = {
@@ -23,11 +23,14 @@
 
             $http.post('/userCheck', player)
                 .then(function successCallback(res) {
-                    console.log('hij komt terug! '  + res.data.value);
                     vm.loggedPlayer = res.data.value;
                 }, function errorCallback(error) {
                     console.log(error);
                 });
+        }
+
+        vm.getLoggedPlayer = function() {
+            return vm.loggedPlayer;
         }
     }
 

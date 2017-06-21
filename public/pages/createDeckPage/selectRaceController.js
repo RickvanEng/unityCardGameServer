@@ -6,9 +6,9 @@
         .module('app')
         .controller('selectRaceController', selectRaceController);
 
-    selectRaceController.$inject = ['DBConnectionService', '$scope'];
+    selectRaceController.$inject = ['DBConnectionService', '$scope', 'newDeckPageService', 'loginService'];
 
-    function selectRaceController(DB, $scope) {
+    function selectRaceController(DB, $scope, newDeckService, logService) {
 
         var vm = this;
 
@@ -20,10 +20,14 @@
         vm.loreContent;
         vm.loreTitle;
 
-
         vm.raceAbility1;
         vm.raceAbility2;
         vm.raceAbility3;
+
+        // init();
+        // var init = function() {
+        //     newDeckService.resetDeck();
+        // }
 
         DB.requestRaces().then(function (data) {
             vm.races = data;
@@ -33,29 +37,31 @@
             vm.lores = data[0].lores;
         });
 
-        vm.selectRace = function(race) {
-            console.log(vm.lores);
-            console.log(vm.races);
+        vm.selectRace = function (race) {
+
+            newDeckService.newDeck.race = race._id;
+            newDeckService.newDeck.deckOwner = logService.loggedPlayer;
+            newDeckService.newDeck.deckName = vm.deckName;
+            newDeckService.deckBuilder = true;
 
             for (var i = 0; i < vm.lores.length; i++) {
                 if (vm.lores[i].race === race.race) {
-                    console.log('match op: ' + vm.lores[i].race)
                     vm.loreContent = vm.lores[i].lore;
                     vm.loreTitle = vm.lores[i].race;
                 }
             }
 
-            for (var i = 0; i <  vm.races.length; i++) {
+            for (var i = 0; i < vm.races.length; i++) {
                 if (vm.races[i].race === race.race) {
                     vm.raceAbility1 = vm.races[i].abilities.ability1;
                     vm.raceAbility2 = vm.races[i].abilities.ability2;
                     vm.raceAbility3 = vm.races[i].abilities.ability3;
-                   
+
                 }
             }
         };
 
-        
+
 
         // $scope.races;
 
@@ -91,7 +97,7 @@
         //             $scope.raceAbility1 = $scope.races[i].abilities.ability1;
         //             $scope.raceAbility2 = $scope.races[i].abilities.ability2;
         //             $scope.raceAbility3 = $scope.races[i].abilities.ability3;
-                   
+
         //         }
         //     }
         // };
@@ -102,7 +108,7 @@
         //     //socket.emit('DeckBuilder-step1', selectedRace);
         //     DB.setNewDeck ({'atri': 'race', 'value': selectedRace.race});
         // };
-        
+
         // $scope.hoverIn = function(){
         //     this.hoverEdit = true;
         // };

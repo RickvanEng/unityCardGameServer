@@ -10,15 +10,8 @@
 
     function loginController(logService) {
 
-        console.log('login contrl loaded');
-
         var vm = this;
         vm.testVar;
-
-        console.log(logService.loggedPlayer);
-        if(logService.loggedPlayer != '') {
-            console.log(logService.loggedPlayer);
-        }
 
         // vm.signUp = function() {
         //     console.log('hallo signUp');

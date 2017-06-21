@@ -13,98 +13,7 @@
         var vm = this;
 
         //origineele card array
-        vm.cards = [];
-        //parameters voor filter
-        var filterActive = false;
-        //array met card die word geshowed op pagina
-        vm.showCards = [];
-
-        vm.cardTypes;
-        vm.cardRaces;
-        vm.cardRoles;
-        vm.cardElements;
-
-
-
-        init();
-        function init() {
-            cardBrowserService.requestTypes().then(function (data) {
-                vm.cardTypes = data;
-            });
-
-            cardBrowserService.requestRaces().then(function (data) {
-                vm.cardRaces = data;
-            });
-
-            cardBrowserService.requestRoles().then(function (data) {
-                vm.cardRoles = data;
-            });
-
-            cardBrowserService.requestElements().then(function (data) {
-                vm.cardElements = data;
-            });
-
-            cardBrowserService.requestCards().then(function (data1) {
-                vm.cards = data1;
-            });
-
-            cardBrowserService.requestCards().then(function (data1) {
-                vm.showCards = data1;
-            });
-
-        };
-
-        vm.filter = function (category, subject) {
-            if (filterActive) {
-                filterActive = false;
-                cardBrowserService.requestCards().then(function (data1) {
-                    vm.showCards = data1;
-                });
-            } else {
-                filterActive = true;
-                for (var i = 0; i < vm.showCards.length; i++) {
-                    switch (category) {
-                        case 'race':
-                            if (vm.showCards[i].race !== subject) {
-                                vm.showCards.splice([i], 1);
-                                i--;
-                            }
-                            break;
-                        case 'type':
-                        console.log('in type')
-                            if (vm.showCards[i].type !== subject) {
-                                vm.showCards.splice([i], 1);
-                                i--;
-                            }
-                            break;
-                        case 'role':
-                        console.log('in role')
-                            if (vm.showCards[i].role !== subject) {
-                                vm.showCards.splice([i], 1);
-                                i--;
-                            }
-                            break;
-                        case 'element':
-                        console.log('in element')
-                            if (vm.showCards[i].element !== subject) {
-                                vm.showCards.splice([i], 1);
-                                i--;
-                            }
-                            break;
-                    }
-                }
-            }
-        }
-
-        //set de css style van de cards naar de goede kleur van het element. in css staan classes die matchen met naam
-        vm.cardColor = function (element) {
-            console.log('gets called')
-            return element;
-        };
-
-        vm.elementColor = function (element) {
-            return element.element;
-        };
+        
 
 
 
@@ -205,11 +114,7 @@
         //     document.getElementById("iput-deckName").value = deck.deckName;
         // };
 
-        // vm.addToDeckList = function (card) {
-        //     if (vm.getTotalAmount(card) < 3) {
-        //         vm.deckList.push(card);
-        //     }
-        // };
+        
 
         // // $scope.deleteDeck = function () {
         // //     var deleteDeckName = document.getElementById("iput-deckName").value;
@@ -224,11 +129,7 @@
         // //     threeOrMoreDecks();
         // // };
 
-        // vm.saveDeck = function () {
-        //     var newDeckName = document.getElementById("iput-deckName").value;
-
-        //     //socket.emit('saveDeck', { "deckList": $scope.deckList, "deckName": newDeckName, "deckId": deckId });
-        // };
+        
 
         // // socket.on('saveDeckReturn', function (data) {
         // //     //console.log(data);
@@ -257,119 +158,9 @@
         //     return total;
         // }
 
-        // vm.remove = function (card) {
-        //     var index = vm.deckList.indexOf(card);
-        //     vm.deckList.splice(index, 1);
-        // }
+        
 
-        // //hier moet ook nog naar gekeken worden
-        // var raceToggle = false
-        // var elementToggle = false
-        // var typeToggle = false
-        // var roleToggle = false
-
-        // vm.raceFilter = function (id) {
-        //     //console.log(id);
-        //     if (raceToggle === false) {
-        //         document.getElementById(id.displayRace).style.backgroundColor = "#e0d87f";
-        //         raceToggle = true;
-
-        //         for (var i = 0; i < vm.cards.length; i++) {
-        //             console.log('checked race = ' + vm.cards[i].race)
-        //             if (vm.cards[i].race != id.race) {
-        //                 //console.log('removed race = ' + $scope.cards[i].race);
-        //                 vm.cards.splice([i], 1);
-        //                 i--;
-        //             }
-        //         }
-
-        //     } else {
-        //         document.getElementById(id.displayRace).style.backgroundColor = "lightgray";
-        //         raceToggle = false;
-
-        //         cardBrowserService.requestCards().then(function (data) {
-        //             vm.cards = data;
-        //         });
-        //     }
-        // }
-
-
-        // vm.elementFilter = function (id) {
-        //     //console.log(id);
-        //     if (elementToggle === false) {
-        //         document.getElementById(id).style.backgroundColor = "#e0d87f";
-        //         elementToggle = true
-
-        //         for (var i = 0; i < vm.cards.length; i++) {
-        //             //console.log('checked element = ' + $scope.cards[i].element)
-        //             //console.log(id)
-        //             if (vm.cards[i].element != id) {
-        //                 //console.log('removed element = ' + $scope.cards[i].element);
-        //                 vm.cards.splice([i], 1);
-        //                 i--;
-        //             }
-        //         }
-
-        //     } else {
-        //         document.getElementById(id).style.backgroundColor = "lightgrey";
-        //         elementToggle = false
-
-        //         cardBrowserService.requestCards().then(function (data) {
-        //             vm.cards = data;
-        //         });
-        //     }
-        // }
-
-
-        // vm.typeFilter = function (id) {
-        //     //console.log(id);
-        //     if (typeToggle === false) {
-        //         document.getElementById(id).style.backgroundColor = "#e0d87f";
-        //         typeToggle = true
-
-        //         for (var i = 0; i < vm.cards.length; i++) {
-        //             //console.log('checked type = ' + $scope.cards[i].type)
-        //             if (vm.cards[i].type != id) {
-        //                 //console.log('removed type = ' + $scope.cards[i].type);
-        //                 vm.cards.splice([i], 1);
-        //                 i--;
-        //             }
-        //         }
-        //     } else {
-        //         document.getElementById(id).style.backgroundColor = "lightgrey";
-        //         typeToggle = false
-
-        //         cardBrowserService.requestCards().then(function (data) {
-        //             vm.cards = data;
-        //         });
-        //     }
-        // }
-
-
-        // vm.roleFilter = function (id) {
-        //     //console.log(id);
-        //     if (roleToggle === false) {
-        //         document.getElementById(id).style.backgroundColor = "#e0d87f";
-        //         roleToggle = true
-
-        //         for (var i = 0; i < vm.cards.length; i++) {
-        //             //console.log('checked role = ' + $scope.cards[i].role)
-        //             if (vm.cards[i].role != id) {
-        //                 //console.log('removed role = ' + $scope.cards[i].role);
-        //                 vm.cards.splice([i], 1);
-        //                 i--;
-        //             }
-        //         }
-
-        //     } else {
-        //         document.getElementById(id).style.backgroundColor = "lightgrey";
-        //         roleToggle = false
-
-        //         cardBrowserService.requestCards().then(function (data) {
-        //             vm.cards = data;
-        //         });
-        //     }
-        // }
+        
     }
 
 }());

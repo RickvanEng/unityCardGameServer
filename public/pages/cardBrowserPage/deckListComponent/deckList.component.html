@@ -6,7 +6,7 @@
     <div class="panel-body"> </div>
 
     <div id="currentDecks">
-        <button type="button" class="btn-deck btn-deck-default w100" ng-repeat="deck in playerDecks" data-ng-click="showDeckList(deck)">{{deck.deckName}} {{deck.cards.length}}/30</button>
+        <button type="button" class="btn-deck btn-deck-default w100" ng-repeat="deck in $ctrl.decks" data-ng-click="$ctrl.showDeckList(deck)">{{deck.deckName}} {{deck.cards.length}}/30</button>
         <a ui-sref="createDeck.selectRace"><button type="button" id="addNewDeck" class="w100" >Create new Deck!</button></a>
     </div>
 
@@ -15,7 +15,7 @@
 
 
     <div id="deckListFrame">
-        <div id="holder" data-ng-repeat="card in (deckList | orderBy: 'name') track by $index" data-ng-show="card.name != (deckList | orderBy: 'name')[$index - 1].name">
+        <div id="holder" data-ng-repeat="card in (deck.cards | orderBy: 'name') track by $index" data-ng-show="card.name != (deckList | orderBy: 'name')[$index - 1].name">
             <div id="card card-1" style="float:left; width: 80%;">
                 <button type="button" id="cardBrowser-cardButton" class="btn-M btn-M-default" style="width: 60%" data-ng-click="remove(card)">{{card.name}}</button>
             </div>

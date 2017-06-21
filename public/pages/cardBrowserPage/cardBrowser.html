@@ -1,17 +1,14 @@
 <div class="var-container">
 
   <div ng-controller="loginController as loginCtrl">
-        <header-component
-            sign-in="loginCtrl.signIn(name, password)"
-            sign-up="loginCtrl.signUp()"
-            sign-out="loginCtrl.signOut()"
-            var="loginCtrl.testVar">
-        </header-component>
-    </div>
+    <header-component sign-in="loginCtrl.signIn(name, password)" sign-up="loginCtrl.signUp()" sign-out="loginCtrl.signOut()"
+      var="loginCtrl.testVar">
+    </header-component>
+  </div>
 
-  <div>
+  <div ng-controller="cardDecklistController as deckListCtrl">
     <!--filter panel-->
-    <div class="var-content" ng-controller="cardContentController as cardContentCtrl">
+    <div class="var-content">
 
       <div class="panel panel-blue w15">
         <div class="panel-heading">
@@ -20,26 +17,26 @@
 
         <div class="panel-body">
           <h4>Race</h4>
-          <div ng-repeat="race in cardContentCtrl.cardRaces" id={{race.displayRace}} class="btn-M btn-M-lightGrey" style="margin-left: 2px;"
-            ng-click="cardContentCtrl.filter('race', race.race)">
+          <div ng-repeat="race in deckListCtrl.cardRaces" id={{race.displayRace}} class="btn-M btn-M-lightGrey" style="margin-left: 2px;"
+            ng-click="deckListCtrl.filter('race', race.race)">
             <p>{{race.race}}</p>
           </div>
 
           <h4 style="clear:both">Element</h4>
-          <div ng-repeat="element in cardContentCtrl.cardElements" id={{element.element}} class="btn-M btn-M-lightGrey" style="margin-left: 2px;"
-            ng-click="cardContentCtrl.filter('element', element.element)">
+          <div ng-repeat="element in deckListCtrl.cardElements" id={{element.element}} class="btn-M btn-M-lightGrey" style="margin-left: 2px;"
+            ng-click="deckListCtrl.filter('element', element.element)">
             <p>{{element.element}}</p>
           </div>
 
           <h4 style="clear:both">Type</h4>
-          <div ng-repeat="type in cardContentCtrl.cardTypes" id={{type.type}} class="btn-M btn-M-lightGrey" style="margin-left: 2px;"
-            ng-click="cardContentCtrl.filter('type', type.type)">
+          <div ng-repeat="type in deckListCtrl.cardTypes" id={{type.type}} class="btn-M btn-M-lightGrey" style="margin-left: 2px;"
+            ng-click="deckListCtrl.filter('type', type.type)">
             <p>{{type.type}}</p>
           </div>
 
           <h4 style="clear:both">Role</h4>
-          <div ng-repeat="role in cardContentCtrl.cardRoles" id={{role.role}} class="btn-M btn-M-lightGrey" style="margin-left: 2px;"
-            ng-click="cardContentCtrl.filter('role', role.role)">
+          <div ng-repeat="role in deckListCtrl.cardRoles" id={{role.role}} class="btn-M btn-M-lightGrey" style="margin-left: 2px;"
+            ng-click="deckListCtrl.filter('role', role.role)">
             <p>{{role.role}}</div>
         </div>
       </div>
@@ -49,7 +46,7 @@
         <!-- here starts the card file, css -->
         <div class="CARD-cardBrowser-cards">
           <ul>
-            <li class=' hvr-grow-shadow' data-ng-repeat="card in cardContentCtrl.showCards" data-ng-click="addToDeckList(card)">
+            <li class=' hvr-grow-shadow' data-ng-repeat="card in deckListCtrl.showCards" data-ng-click="deckListCtrl.addToDeckList(card)">
               <card-component card='card' class="CARD-main"></card-component>
             </li>
           </ul>
@@ -59,8 +56,45 @@
 
     <!--data-ng-repeat="product in products = (products | orderBy: 'productName') track by $index" data-ng-show="product.productName != products[$index - 1].productName"-->
 
-    <div ng-controller="cardDecklistController as deckListCtrl">
-      <decklist-component id="deckList" style="display: none;"></decklist-component>
+    <div id='deckList'>
+      <div class="panel panel-darkgrey w20" style="float: right">
+        <div class="panel-heading">
+          <h3 class="panel-title">Decks</h3>
+        </div>
+
+        <div class="panel-body"> </div>
+
+        <div id="currentDecks">
+          <button type="button" class="btn-deck btn-deck-default w100" ng-repeat="deck in deckListCtrl.playerDecks" 
+                  data-ng-click="deckListCtrl.showDeckList(deck)">{{deck.deckName}} {{deck.cards.length}}/30</button>
+          <a ui-sref="createDeck.selectRace"><button type="button" id="addNewDeck" class="w100" >Create new Deck!</button></a>
+        </div>
+
+        <h4 style="float:left; width:50%; background-color: #3e3f3a">Cards</h4>
+        <h4 style="float:right; width:50%; background-color: #3e3f3a">amount</h4>
+
+
+        <div id="deckListFrame">
+          <div id="holder" data-ng-repeat="card in (deckListCtrl.cardList | orderBy: 'name') track by $index" data-ng-show="card.name != (deckListCtrl.cardList | orderBy: 'name')[$index - 1].name">
+            <div id="card card-1" style="float:left; width: 80%;">
+              <button type="button" id="cardBrowser-cardButton" class="btn-M btn-M-default" style="width: 60%" data-ng-click="deckListCtrl.remove(card)">{{card.name}}</button>
+            </div>
+            <p style="float:right; margin-right:10px;">{{ deckListCtrl.getTotalAmount(card) }}</p>
+          </div>
+
+          <input type="text" id="iput-deckName" placeholder={{deckListCtrl.deckName}} ng-model="deckListCtrl.deckName" style="margin-top:30px"></input>
+
+          <button type="button" data-ng-click="deckListCtrl.saveDeck(deck)" style="margin-top: 10px;" class="btn-M btn-M-default">Save Deck</button>
+          <button type="button" data-ng-click="deleteDeck()" style="margin-top: 10px;" class="btn-M btn-M-default">Delete Deck</button>
+
+          <p type="text" id="" style="margin-top:5px">{{deck.race}}</p>
+
+          <p type="text" id="" ng-repeat="element in (deckElements | orderBy: 'name') track by $index" class="{{elementColor(element)}}"
+            style="margin-top:5px; color: #fff">{{element.element}}</p>
+
+        </div>
+
+      </div>
     </div>
   </div>
 </div>

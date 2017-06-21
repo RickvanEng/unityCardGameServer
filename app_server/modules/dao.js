@@ -1,14 +1,5 @@
-// module.exports = {
-//   foo: function () {
-//     // whatever
-//   },
-//   bar: function () {
-//     // whatever
-//   }
-// };
-
 var mongojs = require("mongojs");
-var db = mongojs('localhost:27017/cardGame', ['players', 'cards', 'decks', 'content', 'races', 'types', 'elements', 'roles']);
+var db = mongojs('localhost:27017/cardGame', ['users', 'cards', 'decks', 'content', 'races', 'types', 'elements', 'roles']);
 var ObjectId = require('mongodb').ObjectID;
 var async = require('async');
 
@@ -22,8 +13,6 @@ module.exports.getAllCards = function (cb) {
         }
     });
 }
-
-
 
 module.exports.getCardRace = function (raceId, cb) {
     db.races.find({ _id: raceId }, function (err, res) {
@@ -122,7 +111,7 @@ module.exports.insertDeckInDB = function (newDeckName, playerName, cards, cb) {
 
 module.exports.saveNewUser = function (userName, password, cb) {
     //console.log('in save Player method');
-    db.collection('players').insert({"username": userName, "password": password
+    db.collection('users').insert({"username": userName, "password": password
     }
     )
 };

@@ -6,9 +6,9 @@
         .module('app')
         .controller('selectElementController', selectElementController);
 
-    selectElementController.$inject = ['DBConnectionService', '$scope'];
+    selectElementController.$inject = ['DBConnectionService', '$scope', 'newDeckPageService'];
 
-    function selectElementController(DB, $scope) {
+    function selectElementController(DB, $scope, newDeckService) {
 
         var vm = this;
 
@@ -24,31 +24,51 @@
         });
 
         DB.requestCards().then(function (data) {
+            //console.log(JSON.stringify(data));
             vm.allCards = data;
         });
 
-        vm.addElement = function(element) {
+        vm.addElement = function (element) {
             if (vm.chosenElements.length < 7) {
                 vm.chosenElements.push(element);
+
+                var elements_id;
+
+                for (var i = 0; i < vm.elements.length; i++) {
+                    if (vm.elements[i].element === element){
+                        elements_id = vm.elements[i]._id;
+                    }
+                }
+                newDeckService.newDeck.elements.push(elements_id);
             }
         };
 
-        vm.explain = function(element) {
+        vm.saveDeck = function () {
+            console.log('saving deck: ' + JSON.stringify(newDeckService.newDeck));
+            newDeckService.saveDeck().then(function (data) {
+                console.log('gelukt? ' + data);
+            })
+        };
+
+        //stukje legt wat uit over het element. 
+        vm.explain = function (element) {
             vm.showCards = [];
             vm.elementInfo;
 
             for (var i = 0; i < vm.elements.length; i++) {
-                if(vm.elements[i].element === element) {
+                if (vm.elements[i].element === element) {
                     vm.elementInfo = vm.elements[i].elementInfo;
                 }
             }
 
             for (var i = 0; i < vm.allCards.length; i++) {
-                if(vm.allCards[i].class.type === element) {
+                if (vm.allCards[i].class.type === element) {
                     vm.showCards.push(vm.allCards[i]);
                 }
-            }            
+            }
         };
+
+
 
 
 
@@ -61,7 +81,7 @@
         //     }
         //     $scope.$apply();
         // });
-        
+
         // socket.on('loadDBCards-return', function(data) {
         //     $scope.allCards = data;
         //     for (var i = 0; i < $scope.allCards.length; i++) {
@@ -71,7 +91,7 @@
         //     }
         //     $scope.$apply();
         // });
-        
+
         // $scope.addElement = function(element) {
         //     if ($scope.chosenElements.length < 7) {
         //         $scope.chosenElements.push(element);
@@ -84,7 +104,7 @@
 
         // };
 
-        
+
 
         // $scope.filterStarts = function(amount) {
         //     var resultArray = [];
@@ -96,12 +116,12 @@
         //     }
         //     return resultArray;
         // };
-        
+
         // $scope.startDeckBuild = function() {
         //     console.log($scope.chosenElements);
         //     DB.setNewDeck({'atri': 'elements', 'value': $scope.chosenElements});
         //     DB.setDeckBuildProcess(true);
         // };
 
-	}
+    }
 }());

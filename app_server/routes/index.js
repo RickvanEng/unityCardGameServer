@@ -6,7 +6,10 @@ var router = express.Router();
 var ctrlmain = require('../controllers/main');
 
 router.get('/',                         ctrlmain.index);
-router.post('/userCheck', jsonParser,   ctrlmain.userCheck);
+router.post('/userCheck',       jsonParser,   ctrlmain.userCheck);
+router.post('/getUserDecks',    jsonParser,   ctrlmain.getUserDecks);
+router.post('/updateDeck',      jsonParser,   ctrlmain.updateDeck);
+router.post('/saveDeck',        jsonParser,   ctrlmain.saveDeck);
 // router.get('/home',                  ctrlmain.home);
 router.get('/deckBuilder',              ctrlmain.deckBuilder);
 router.get('/cardBrowser',              ctrlmain.cardBrowser);
