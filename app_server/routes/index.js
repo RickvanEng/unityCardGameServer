@@ -10,6 +10,7 @@ router.post('/userCheck',       jsonParser,   ctrlmain.userCheck);
 router.post('/getUserDecks',    jsonParser,   ctrlmain.getUserDecks);
 router.post('/updateDeck',      jsonParser,   ctrlmain.updateDeck);
 router.post('/saveDeck',        jsonParser,   ctrlmain.saveDeck);
+router.post('/deleteDeck',      jsonParser,   ctrlmain.deleteDeck);
 // router.get('/home',                  ctrlmain.home);
 router.get('/deckBuilder',              ctrlmain.deckBuilder);
 router.get('/cardBrowser',              ctrlmain.cardBrowser);

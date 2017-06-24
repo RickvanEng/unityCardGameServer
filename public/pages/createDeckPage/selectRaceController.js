@@ -6,15 +6,18 @@
         .module('app')
         .controller('selectRaceController', selectRaceController);
 
-    selectRaceController.$inject = ['DBConnectionService', '$scope', 'newDeckPageService', 'loginService'];
+    selectRaceController.$inject = ['DBConnectionService', '$scope', 'newDeckPageService', 'loginService', '$location'];
 
-    function selectRaceController(DB, $scope, newDeckService, logService) {
+    function selectRaceController(DB, $scope, newDeckService, logService, $location) {
 
         var vm = this;
 
         vm.races;
 
         var selectedRace;
+
+        vm.nameError = '';
+        vm.raceError = '';
 
         vm.lores;
         vm.loreContent;
@@ -41,6 +44,21 @@
             console.log('yes')
             newDeckService.newDeck.deckName = vm.deckName;
         }
+
+        vm.checkAndNavigate = function () {
+            if (newDeckService.newDeck.deckName !== '') {
+                if (newDeckService.newDeck.race !== '') {
+                    $location.path('/createDeck/selectElement');
+                }
+            } else {
+                vm.nameError = 'please select a name for your deck and select a race';
+            }
+            
+
+            
+        }
+
+        
         
 
         vm.selectRace = function (race) {

@@ -8,7 +8,8 @@
     function cardComponent() {
         return {
             bindings: {
-                card: '<'
+                card: '<',
+                cardColor: '&'
             },
             templateUrl: '../components/cardComponent/card.component.html'
         };

@@ -66,6 +66,10 @@
             return $http.post('/updateDeck', {'deck': deck});
         }
 
+        vm.deleteDeck = function (ID) {
+            return $http.post('/deleteDeck', {'deckID': ID});
+        }
+
     }
 }());
 

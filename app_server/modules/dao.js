@@ -180,6 +180,7 @@ module.exports.loadDataInDecks = function (deck, cb) {
 
     getDeckRace(deck.race, function (raceRes) {
         deck.race = raceRes[0].race;
+        
         getDeckElements(deck.elements, function (elementsRes) {
             deck.elements = elementsRes;
 

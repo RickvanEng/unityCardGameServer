@@ -47,7 +47,7 @@
         <div class="CARD-cardBrowser-cards">
           <ul>
             <li class=' hvr-grow-shadow' data-ng-repeat="card in deckListCtrl.showCards" data-ng-click="deckListCtrl.addToDeckList(card)">
-              <card-component card='card' class="CARD-main"></card-component>
+              <card-component card='card' card-color="deckListCtrl.cardColor(card)" class="CARD-main"></card-component>
             </li>
           </ul>
         </div>
@@ -56,7 +56,7 @@
 
     <!--data-ng-repeat="product in products = (products | orderBy: 'productName') track by $index" data-ng-show="product.productName != products[$index - 1].productName"-->
 
-    <div id='deckList'>
+    <div id='deckList' style="display:none;">
       <div class="panel panel-darkgrey w20" style="float: right">
         <div class="panel-heading">
           <h3 class="panel-title">Decks</h3>
@@ -85,11 +85,11 @@
           <input type="text" id="iput-deckName" placeholder={{deckListCtrl.deckName}} ng-model="deckListCtrl.deckName" style="margin-top:30px"></input>
 
           <button type="button" data-ng-click="deckListCtrl.saveDeck(deck)" style="margin-top: 10px;" class="btn-M btn-M-default">Save Deck</button>
-          <button type="button" data-ng-click="deleteDeck()" style="margin-top: 10px;" class="btn-M btn-M-default">Delete Deck</button>
+          <button type="button" data-ng-click="deckListCtrl.deleteDeck()" style="margin-top: 10px;" class="btn-M btn-M-default">Delete Deck</button>
 
           <p type="text" id="" style="margin-top:5px">{{deck.race}}</p>
 
-          <p type="text" id="" ng-repeat="element in (deckElements | orderBy: 'name') track by $index" class="{{elementColor(element)}}"
+          <p type="text" id="" ng-repeat="element in (deckListCtrl.deckElements | orderBy: 'name')" class="{{deckListCtrl.elementColor(element)}}"
             style="margin-top:5px; color: #fff">{{element.element}}</p>
 
         </div>

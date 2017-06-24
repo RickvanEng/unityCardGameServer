@@ -3,8 +3,8 @@
 
         <div id="SR-nextButtonDiv">
 
-            <a ui-sref="createDeck.selectElement">
-                <img src="../../img/next.png"/ style="height: 100%; "/>
+            <a>
+                <img src="../../img/next.png"/ style="height: 100%; " ng-click="raceCtrl.checkAndNavigate()"/>
             </a>
 
         </div>
@@ -14,6 +14,7 @@
                 <input placeholder="Please fill in a deck name" ng-model="raceCtrl.deckName"/>
                 <button ng-click="raceCtrl.setName()">Chose name</button>
             </form>
+            <p>{{raceCtrl.nameError}}</p>
         </div>
     </div>
 

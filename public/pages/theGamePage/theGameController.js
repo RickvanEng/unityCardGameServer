@@ -6,9 +6,9 @@
         .module('app')
         .controller('gameInfoController', gameInfoController);
 
-    gameInfoController.$inject = [];
+    gameInfoController.$inject = ['$window'];
 
-    function gameInfoController() {
+    function gameInfoController($window) {
 
         console.log('gameInfoController Loaded');
 
@@ -16,6 +16,12 @@
 
         vm.title;
         vm.content;
+
+        vm.openWindow = function() {
+            $window.open('//facebook.com');
+        }
+
+
 
         // vm.buttonClick = function (info) {
         //     gameService.getContent(info).then(function (data) {

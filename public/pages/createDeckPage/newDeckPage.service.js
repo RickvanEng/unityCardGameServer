@@ -11,7 +11,9 @@
 
         var vm = this;
 
+        //deze houd bij of er een deck word gebuild. heeft gemaakt met het laden van de deckBrowserController
         vm.deckBuilder = false;
+        vm.deckID;
         vm.newDeck = {
             "deckOwner": "",
             "deckName": "",
@@ -25,8 +27,8 @@
         };
 
         vm.saveDeck = function () {
-            console.log('saveDeck')
-            console.log(vm.newDeck)
+            // console.log('saveDeck')
+            // console.log(vm.newDeck)
             return $http.post('/saveDeck', { 'deck': vm.newDeck });
         };
     }

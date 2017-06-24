@@ -16,6 +16,7 @@
         vm.playerDecks;
         vm.cardList = [];
         vm.deckName = '';
+        vm.deckElements;
 
         //vars voor card content stukje.
         vm.cardTypes;
@@ -57,120 +58,158 @@
                 vm.showCards = data1;
             });
 
+
+
         };
 
-        if (logService.getLoggedPlayer()) {
+        if (logService.getLoggedPlayer() !== '') {
             var user = logService.getLoggedPlayer();
             var decklist = document.getElementById('deckList');
             cardBrowserService.requestDecks(user).then(function (data) {
                 vm.playerDecks = data.data.value;
                 deckList.style.display = 'inline';
                 //threeOrMoreDecks();
-            });
-        } else {
-            console.log('not logged in');
-            //socket.emit('loginCheck');
-        }
-
-        vm.showDeckList = function (deck) {
-            vm.cardList = [];
-            vm.cardList = deck.cards;
-            vm.deckName = deck.deckName;
-            deckID = deck._id;
-        }
-
-        vm.getTotalAmount = function (card) {
-            var total = 0;
-            for (var i = 0; i < vm.cardList.length; i++) {
-                if (card.name === vm.cardList[i].name) {
-                    total += 1;
-                }
-            }
-            return total;
-        }
-
-        vm.addToDeckList = function (card) {
-            if (vm.getTotalAmount(card) < 3) {
-                vm.cardList.push(card);
-            }
-        };
-
-        vm.remove = function (card) {
-            var index = vm.cardList.indexOf(card);
-            vm.cardList.splice(index, 1);
-        }
-
-
-
-        //Content waar de cards in geladen worden!
-
-        vm.filter = function (category, subject) {
-            if (filterActive) {
-                filterActive = false;
-                cardBrowserService.requestCards().then(function (data1) {
-                    vm.showCards = data1;
-                });
-            } else {
-                filterActive = true;
-                for (var i = 0; i < vm.showCards.length; i++) {
-                    switch (category) {
-                        case 'race':
-                            if (vm.showCards[i].race !== subject) {
-                                vm.showCards.splice([i], 1);
-                                i--;
-                            }
-                            break;
-                        case 'type':
-                            console.log('in type')
-                            if (vm.showCards[i].type !== subject) {
-                                vm.showCards.splice([i], 1);
-                                i--;
-                            }
-                            break;
-                        case 'role':
-                            console.log('in role')
-                            if (vm.showCards[i].role !== subject) {
-                                vm.showCards.splice([i], 1);
-                                i--;
-                            }
-                            break;
-                        case 'element':
-                            console.log('in element')
-                            if (vm.showCards[i].element !== subject) {
-                                vm.showCards.splice([i], 1);
-                                i--;
-                            }
-                            break;
+                if (newDeckService.deckBuilder) {
+                    newDeckService.deckBuilder = false;
+                    newDeckService.newDeck.deckOwner = '';
+                    newDeckService.newDeck.deckName = '';
+                    newDeckService.newDeck.race = '';
+                    newDeckService.newDeck.elements = [];
+                    newDeckService.newDeck.cards = [];
+                };
+                for (var x = 0; x < vm.playerDecks.length; x++) {
+                    if (vm.playerDecks[x]._id === newDeckService.deckID) {
+                        vm.showDeckList(vm.playerDecks[x]);
                     }
                 }
+            
+            });
+    } else {
+        console.log('not logged in');
+        //socket.emit('loginCheck');
+    }
+
+    vm.showDeckList = function (deck) {
+        vm.cardList = [];
+        vm.cardList = deck.cards;
+        vm.deckName = deck.deckName;
+        vm.deckElements = deck.elements;
+        //console.log('eles are ' + console.log(JSON.stringify(vm.deckElements)));
+        deckID = deck._id;
+    }
+
+    vm.getTotalAmount = function (card) {
+        var total = 0;
+        for (var i = 0; i < vm.cardList.length; i++) {
+            if (card.name === vm.cardList[i].name) {
+                total += 1;
             }
         }
+        return total;
+    }
 
-        //set de css style van de cards naar de goede kleur van het element. in css staan classes die matchen met naam
-        vm.cardColor = function (element) {
-            console.log('gets called')
-            return element;
-        };
+    vm.addToDeckList = function (card) {
+        if (vm.getTotalAmount(card) < 3) {
+            vm.cardList.push(card);
+        }
+    };
 
-        vm.elementColor = function (element) {
-            return element.element;
-        };
+    vm.remove = function (card) {
+        var index = vm.cardList.indexOf(card);
+        vm.cardList.splice(index, 1);
+    }
 
-        vm.saveDeck = function () {
-            var deckToSave;
+
+
+    //Content waar de cards in geladen worden!
+
+    vm.filter = function (category, subject) {
+        if (filterActive) {
+            filterActive = false;
+            cardBrowserService.requestCards().then(function (data1) {
+                vm.showCards = data1;
+            });
+        } else {
+            filterActive = true;
+            for (var i = 0; i < vm.showCards.length; i++) {
+                switch (category) {
+                    case 'race':
+                        if (vm.showCards[i].race !== subject) {
+                            vm.showCards.splice([i], 1);
+                            i--;
+                        }
+                        break;
+                    case 'type':
+                        if (vm.showCards[i].type !== subject) {
+                            vm.showCards.splice([i], 1);
+                            i--;
+                        }
+                        break;
+                    case 'role':
+                        if (vm.showCards[i].role !== subject) {
+                            vm.showCards.splice([i], 1);
+                            i--;
+                        }
+                        break;
+                    case 'element':
+                        if (vm.showCards[i].element !== subject) {
+                            vm.showCards.splice([i], 1);
+                            i--;
+                        }
+                        break;
+                }
+            }
+        }
+    }
+
+
+    vm.saveDeck = function () {
+        var deckToSave;
+        for (var i = 0; i < vm.playerDecks.length; i++) {
+            if (deckID === vm.playerDecks[i]._id) {
+                deckToSave = vm.playerDecks[i];
+                deckToSave.cards = vm.cardList;
+                deckToSave.deckName = vm.deckName;
+            }
+        }
+        cardBrowserService.saveDeck(deckToSave).then(function (data) {
+            // console.log('data saved');
+        });
+    };
+
+    vm.cardColor = function (deck) {
+        // console.log('gets called')
+        return deck.element;
+    };
+
+    vm.elementColor = function (element) {
+        return element.element;
+    };
+
+    vm.deleteDeck = function () {
+        cardBrowserService.deleteDeck(deckID).then(function (data) {
             for (var i = 0; i < vm.playerDecks.length; i++) {
-                if (deckID === vm.playerDecks[i]._id) {
-                    deckToSave = vm.playerDecks[i];
-                    deckToSave.cards = vm.cardList;
-                    deckToSave.deckName = vm.deckName;
+                if (vm.playerDecks[i]._id === data.data.value) {
+                    vm.playerDecks.splice([i], 1);
                 }
             }
 
+            vm.cardList = [];
+            vm.deckName = '';
+            vm.deckElements = [];
 
+        });
 
-            cardBrowserService.saveDeck(deckToSave).then(function (data) {
-                console.log('data saved');
-            });
-        };
-    }
+        // var deleteDeckName = document.getElementById("iput-deckName").value;
+        // socket.emit('deleteDeck', deleteDeckName);
+        // for (var i = 0; i < $scope.playerDecks.length; i++) {
+        //     if (deleteDeckName === $scope.playerDecks[i].deckName) {
+        //         console.log('in delete deck shizzle')
+        //         $scope.playerDecks.splice([i], 1);
+        //         $scope.$apply;
+        //     }
+        // }
+        // threeOrMoreDecks();
+    };
+}
 }());

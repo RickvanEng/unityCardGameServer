@@ -6,9 +6,9 @@
         .module('app')
         .controller('selectElementController', selectElementController);
 
-    selectElementController.$inject = ['DBConnectionService', '$scope', 'newDeckPageService'];
+    selectElementController.$inject = ['DBConnectionService', '$scope', 'newDeckPageService', '$location'];
 
-    function selectElementController(DB, $scope, newDeckService) {
+    function selectElementController(DB, $scope, newDeckService, $location) {
 
         var vm = this;
 
@@ -35,8 +35,9 @@
                 var elements_id;
 
                 for (var i = 0; i < vm.elements.length; i++) {
-                    if (vm.elements[i].element === element){
+                    if (vm.elements[i].element === element) {
                         elements_id = vm.elements[i]._id;
+                        console.log('id = ' + vm.elements[i]._id)
                     }
                 }
                 newDeckService.newDeck.elements.push(elements_id);
@@ -45,9 +46,7 @@
 
         vm.saveDeck = function () {
             console.log('saving deck: ' + JSON.stringify(newDeckService.newDeck));
-            newDeckService.saveDeck().then(function (data) {
-                console.log('gelukt? ' + data);
-            })
+
         };
 
         //stukje legt wat uit over het element. 
@@ -67,6 +66,18 @@
                 }
             }
         };
+
+        vm.saveBeforeNavigate = function () {
+            //dit moet met promise, eerst saven dan pas verder gaan. anders is hij nog niet gesaved terwijl volgende page al geload word
+            if (newDeckService.newDeck.elements.length === 7) {
+
+                newDeckService.saveDeck().then(function (data) {
+                    console.log(data.data.value);
+                    newDeckService.deckID = data.data.value;
+                    $location.path('/cardBrowser');
+                })
+            }
+        }
 
 
 

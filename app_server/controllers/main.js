@@ -33,7 +33,7 @@ module.exports.updateDeck = function (req, resMain) {
     //console.log('cards van het deck dat binnenkomt: ' + JSON.stringify(req.body.deck.cards));
     // console.log(req.body.deck);
     // console.log(req.body.deck.deckName);
-    console.log('incoming deck: '  + req.body.deck);
+    console.log('incoming deck: ' + req.body.deck);
     var deckCards = [];
     for (var i = 0; i < req.body.deck.cards.length; i++) {
         deckCards.push(req.body.deck.cards[i]._id);
@@ -63,7 +63,6 @@ module.exports.updateDeck = function (req, resMain) {
 
 module.exports.saveDeck = function (req, resMain) {
 
-    console.log('save deck dinges');
     db.decks.insert({
         "deckOwner": req.body.deck.deckOwner,
         "deckName": req.body.deck.deckName,
@@ -73,12 +72,15 @@ module.exports.saveDeck = function (req, resMain) {
     },
         function (err, res) {
             if (res) {
-                deckBuildId = res._id;
                 console.log(res)
+                return sendResponse(resMain, 200, { "status": "succes", "value": res._id });
             } else {
                 console.log(err)
+                return sendResponse(resMain, 400, { "status": "succes", "value": 'niet gelukt!' });
             }
         });
+
+
 };
 
 module.exports.getUserDecks = function (req, res) {
@@ -93,6 +95,20 @@ module.exports.getUserDecks = function (req, res) {
             }, function () {
                 sendResponse(res, 200, { "status": "succes", "value": resArray });
             });
+        }
+    });
+};
+
+module.exports.deleteDeck = function (req, res) {
+    console.log('id = ' + req.body.deckID)
+
+    db.decks.remove({ '_id': ObjectId(req.body.deckID) }, function (err, res1) {
+        if (res1) {
+            console.log(res1);
+            sendResponse(res, 200, { "status": "succes", "value": req.body.deckID });
+        } else {
+            console.log(err);
+            sendResponse(res, 200, { "status": "error", "value": 'niet gleukt' });
         }
     });
 };
