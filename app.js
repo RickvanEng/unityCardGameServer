@@ -54,42 +54,6 @@ Player.onDisconnect = function (socket) {
 
 
 //function die als server voor eerst laad alle kaarten ophaald van de db.
-var init = function (cb) {
-
-    dao.getAllCards(function (res) {
-        CARD_LIST = res;
-
-        async.forEach(CARD_LIST, function (card, callback) {
-            dao.getCardRace(card.race, function (raceRes) {
-                card.race = raceRes[0].race;
-            });
-
-            dao.getCardElement(card.element, function (elementRes) {
-                card.element = elementRes[0].element;
-            });
-
-            dao.getCardRole(card.role, function (roleRes) {
-                card.role = roleRes[0].role;
-            });
-
-            dao.getCardType(card.type, function (typeRes) {
-                card.type = typeRes[0].type;
-            });
-
-            dao.getCardClassElement(card.class.type, function (classTypeRes) {
-                card.class.type = classTypeRes[0].element;
-            });
-
-            callback();
-
-        }, function () {
-            //console.log('cards are loaded from db');
-        });
-
-    });
-}
-
-init();
 
 
 //SOCKETS
@@ -190,32 +154,26 @@ io.sockets.on('connection', function (socket) {
         }
     });
 
-
-    //Saves the deck. Checks if name already exists, if not, it makes a new deck.
-    socket.on('saveDeck', function (data) {
-
-    });
-
     //Check is deck exists. If it exists it updates the deck values with the new info.
-    socket.on('updateDeck', function (data) {
-        var name = ("" + playerName);
-        dao.isDeckNameTaken(data.deckName, name, function (res) {
-            if (res) {
-                var cardList = [];
-                for (var i = 0; i < data.deckList.length; i++) {
-                    cardList.push(data.deckList[i]._id);
-                }
+    // socket.on('updateDeck', function (data) {
+    //     var name = ("" + playerName);
+    //     dao.isDeckNameTaken(data.deckName, name, function (res) {
+    //         if (res) {
+    //             var cardList = [];
+    //             for (var i = 0; i < data.deckList.length; i++) {
+    //                 cardList.push(data.deckList[i]._id);
+    //             }
 
-                db.decks.find({ deckName: data.deckName, deckOwner: name }, function (err, res) {
-                    dao.deleteDeckFromDB(data.deckName, name, function (res) {
-                        db.decks.update({ deckName: data.deckName, deckOwner: name }, { $set: { cards: cardList } }, { multi: true });
-                    });
-                });
-                socket.emit('updateDeckReturn');
+    //             db.decks.find({ deckName: data.deckName, deckOwner: name }, function (err, res) {
+    //                 dao.deleteDeckFromDB(data.deckName, name, function (res) {
+    //                     db.decks.update({ deckName: data.deckName, deckOwner: name }, { $set: { cards: cardList } }, { multi: true });
+    //                 });
+    //             });
+    //             socket.emit('updateDeckReturn');
 
-            }
-        });
-    });
+    //         }
+    //     });
+    // });
 
 
 
@@ -259,57 +217,53 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
-    socket.on('loadDBCards', function () {
-        socket.emit('loadDBCards-return', CARD_LIST)
-    });
+    // socket.on('getContent', function (info) {
+    //     console.log(info);
+    //     info = info.toLowerCase();
+    //     db.content.find({ "docName": info }, function (err, res) {
+    //         if (res) {
+    //             socket.emit('getContent', res)
+    //         }
+    //     });
+    // });
 
-    socket.on('getContent', function (info) {
-        console.log(info);
-        info = info.toLowerCase();
-        db.content.find({ "docName": info }, function (err, res) {
-            if (res) {
-                socket.emit('getContent', res)
-            }
-        });
-    });
+    // socket.on('getRaces', function () {
+    //     db.races.find({}, function (err, res) {
+    //         if (res) {
+    //             socket.emit('getRacesReturn', res)
+    //         }
+    //     });
+    // });
 
-    socket.on('getRaces', function () {
-        db.races.find({}, function (err, res) {
-            if (res) {
-                socket.emit('getRacesReturn', res)
-            }
-        });
-    });
+    // socket.on('getElements', function () {
+    //     //console.log('getRaces request binnen');
+    //     db.elements.find({}, function (err, res) {
+    //         if (res) {
+    //             //console.log(res);
+    //             socket.emit('getElementsReturn', res)
+    //         }
+    //     });
+    // });
 
-    socket.on('getElements', function () {
-        //console.log('getRaces request binnen');
-        db.elements.find({}, function (err, res) {
-            if (res) {
-                //console.log(res);
-                socket.emit('getElementsReturn', res)
-            }
-        });
-    });
+    // socket.on('getTypes', function () {
+    //     //console.log('getTypes request binnen');
+    //     db.types.find({}, function (err, res) {
+    //         if (res) {
+    //             //console.log(res);
+    //             socket.emit('getTypesReturn', res)
+    //         }
+    //     });
+    // });
 
-    socket.on('getTypes', function () {
-        //console.log('getTypes request binnen');
-        db.types.find({}, function (err, res) {
-            if (res) {
-                //console.log(res);
-                socket.emit('getTypesReturn', res)
-            }
-        });
-    });
-
-    socket.on('getRoles', function () {
-        //console.log('getRoles request binnen');
-        db.roles.find({}, function (err, res) {
-            if (res) {
-                //console.log(res);
-                socket.emit('getRolesReturn', res)
-            }
-        });
-    });
+    // socket.on('getRoles', function () {
+    //     //console.log('getRoles request binnen');
+    //     db.roles.find({}, function (err, res) {
+    //         if (res) {
+    //             //console.log(res);
+    //             socket.emit('getRolesReturn', res)
+    //         }
+    //     });
+    // });
 
     socket.on('getHomeContent', function () {
         //console.log('getHomeContent request binnen');
@@ -321,14 +275,14 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
-    socket.on('deleteDeck', function (data) {
-        //console.log(data);
-        db.decks.remove({ deckName: data }, function (err, res) {
-            if (res) {
-                //console.log(res);
-            }
-        });
-    });
+    // socket.on('deleteDeck', function (data) {
+    //     //console.log(data);
+    //     db.decks.remove({ deckName: data }, function (err, res) {
+    //         if (res) {
+    //             //console.log(res);
+    //         }
+    //     });
+    // });
 
     socket.on('getLores', function () {
         //console.log('in getLores');

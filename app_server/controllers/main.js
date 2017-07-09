@@ -12,6 +12,8 @@ var sendResponse = function (res, status, content) {
     res.json(content);
 }
 
+var allCards = loadAllCards();
+
 module.exports.index = function (err, res) {
     res.sendFile(path.resolve('app_server/views/index.html'));
 };
@@ -26,7 +28,87 @@ module.exports.userCheck = function (req, res) {
             sendResponse(res, 200, { "status": "succes", "value": 'boe' });
         }
     })
+};
 
+module.exports.getTypes = function (req, res) {
+    db.types.find({}, function (err, res1) {
+        if (res1) {
+            return sendResponse(res, 200, { "status": "succes", "value": res1 });
+        }
+    });
+};
+
+module.exports.getRoles = function (req, res) {
+    db.roles.find({}, function (err, res1) {
+        if (res1) {
+            //console.log(res);
+            return sendResponse(res, 200, { "status": "succes", "value": res1 });
+        }
+    });
+};
+
+module.exports.getRaces = function (req, res) {
+    db.races.find({}, function (err, res1) {
+        if (res1) {
+            return sendResponse(res, 200, { "status": "succes", "value": res1 });
+        }
+    });
+};
+
+module.exports.getElements = function (req, res) {
+    db.elements.find({}, function (err, res1) {
+        if (res1) {
+            //console.log(res);
+            return sendResponse(res, 200, { "status": "succes", "value": res1 });
+        }
+    });
+};
+
+module.exports.getLores = function (req, res) {
+    db.content.find({ docName: 'raceLores' }, function (err, res1) {
+        if (res1) {
+            //console.log(res);
+            return sendResponse(res, 200, { "status": "succes", "value": res1 });
+        }
+    });
+};
+
+function loadAllCards(req, res) {
+    dao.getAllCards(function (res1) {
+        allCards = res1;
+
+        async.forEach(allCards, function (card, callback) {
+            dao.getCardRace(card.race, function (raceRes) {
+                card.race = raceRes[0].race;
+            });
+
+            dao.getCardElement(card.element, function (elementRes) {
+                card.element = elementRes[0].element;
+            });
+
+            dao.getCardRole(card.role, function (roleRes) {
+                card.role = roleRes[0].role;
+            });
+
+            dao.getCardType(card.type, function (typeRes) {
+                card.type = typeRes[0].type;
+            });
+
+            dao.getCardClassElement(card.class.type, function (classTypeRes) {
+                card.class.type = classTypeRes[0].element;
+            });
+
+            callback();
+
+        }, function () {
+            console.log('cards loaded');
+        });
+    });
+};
+
+module.exports.getAllCards = function (req, res) {
+    console.log(allCards)
+    return sendResponse(res, 200, { "status": "succes", "value": allCards });
 };
 
 module.exports.updateDeck = function (req, resMain) {

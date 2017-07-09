@@ -50,16 +50,11 @@
                 vm.cardElements = data;
             });
 
-            cardBrowserService.requestCards().then(function (data1) {
+            cardBrowserService.requestAllCards().then(function (data1) {
+                console.log(data1)
                 vm.cards = data1;
-            });
-
-            cardBrowserService.requestCards().then(function (data1) {
                 vm.showCards = data1;
             });
-
-
-
         };
 
         if (logService.getLoggedPlayer() !== '') {
@@ -126,7 +121,7 @@
     vm.filter = function (category, subject) {
         if (filterActive) {
             filterActive = false;
-            cardBrowserService.requestCards().then(function (data1) {
+            cardBrowserService.requestAllCards().then(function (data1) {
                 vm.showCards = data1;
             });
         } else {

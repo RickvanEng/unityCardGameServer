@@ -32,11 +32,13 @@
         //     newDeckService.resetDeck();
         // }
 
-        DB.requestRaces().then(function (data) {
+
+
+        newDeckService.requestRaces().then(function (data) {
             vm.races = data;
         });
 
-        DB.requestLores().then(function (data) {
+        newDeckService.requestLores().then(function (data) {
             vm.lores = data[0].lores;
         });
 
@@ -53,22 +55,22 @@
             } else {
                 vm.nameError = 'please select a name for your deck and select a race';
             }
-            
 
-            
+
+
         }
 
-        
-        
+
+
 
         vm.selectRace = function (race) {
 
             newDeckService.newDeck.race = race._id;
             newDeckService.newDeck.deckOwner = logService.loggedPlayer;
-            
+
             newDeckService.deckBuilder = true;
 
-            
+
 
             for (var i = 0; i < vm.lores.length; i++) {
                 if (vm.lores[i].race === race.race) {

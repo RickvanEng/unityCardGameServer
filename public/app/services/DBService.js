@@ -6,9 +6,9 @@
         .service('DBConnectionService', DBConnectionService);
 
 
-    DBConnectionService.$inject = ['$q'];
+    DBConnectionService.$inject = ['$q', '$http'];
 
-    function DBConnectionService($q) {
+    function DBConnectionService($q, $http) {
 
 
         //De enige socket in de file. Alles moet via deze socket worden geregeld.
@@ -26,59 +26,50 @@
         var cards = [];
         var decks = [];
 
-        this.requestTypes = function () {
-            var deferred = $q.defer();
-            socket.emit('getTypes');
-            socket.on('getTypesReturn', function (data) {
-                deferred.resolve(data);
-            });
-            return deferred.promise;
-        }
+        // this.requestRaces = function () {
+        //     var deferred = $q.defer();
+        //     socket.emit('getRaces');
+        //     socket.on('getRacesReturn', function (data) {
+        //         deferred.resolve(data);
+        //     });
+        //     return deferred.promise;
+        // }
 
-        this.requestRaces = function () {            
-            var deferred = $q.defer();
-            socket.emit('getRaces');
-            socket.on('getRacesReturn', function (data) {
-                deferred.resolve(data);
-            });
-            return deferred.promise;
-        }
+        // this.requestRoles = function () {
+        //     var deferred = $q.defer();
+        //     socket.emit('getRoles');
+        //     socket.on('getRolesReturn', function (data) {
+        //         deferred.resolve(data);
+        //     });
+        //     return deferred.promise;
+        // }
 
-        this.requestRoles = function () {
-            var deferred = $q.defer();
-            socket.emit('getRoles');
-            socket.on('getRolesReturn', function (data) {
-                deferred.resolve(data);
-            });
-            return deferred.promise;
-        }
+        // this.requestElements = function () {
+        //     var deferred = $q.defer();
+        //     socket.emit('getElements');
+        //     socket.on('getElementsReturn', function (data) {
+        //         deferred.resolve(data);
+        //     });
+        //     return deferred.promise;
+        // }
 
-        this.requestElements = function () {            
-            var deferred = $q.defer();
-            socket.emit('getElements');
-            socket.on('getElementsReturn', function (data) {
-                deferred.resolve(data);
-            });
-            return deferred.promise;
-        }
+        // this.requestLores = function () {
+        //     var deferred = $q.defer();
+        //     socket.emit('getLores');
+        //     socket.on('getLoresReturn', function (data) {
+        //         deferred.resolve(data);
+        //     });
+        //     return deferred.promise;
+        // }
 
-        this.requestLores = function () {            
-            var deferred = $q.defer();
-            socket.emit('getLores');
-            socket.on('getLoresReturn', function (data) {
-                deferred.resolve(data);
-            });
-            return deferred.promise;
-        }
-
-        this.requestCards = function () {
-            var deferred = $q.defer();
-            socket.emit('loadDBCards');
-            socket.on('loadDBCards-return', function (data) {
-                deferred.resolve(data);
-            });
-            return deferred.promise;
-        }
+        // this.requestCards = function () {
+        //     var deferred = $q.defer();
+        //     socket.emit('loadDBCards');
+        //     socket.on('loadDBCards-return', function (data) {
+        //         deferred.resolve(data);
+        //     });
+        //     return deferred.promise;
+        // }
 
         var PlayerlogIn = false;
         var deckBuildProcess = false;
@@ -116,7 +107,7 @@
 
         this.getNewDeck = function (data) {
             return newDeck;
-        }        
+        }
 
         //chat function
         this.sendMessage = function (message) {
@@ -139,7 +130,7 @@
 
 
         //dit request alle data van de service als de controller word geladen.
-        
+
 
         //getters + setters
 

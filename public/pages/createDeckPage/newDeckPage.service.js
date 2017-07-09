@@ -31,6 +31,22 @@
             // console.log(vm.newDeck)
             return $http.post('/saveDeck', { 'deck': vm.newDeck });
         };
+
+        vm.requestRaces = function () {
+            var deferred = $q.defer();
+            $http.get('/getRaces').then(function (data) {
+                deferred.resolve(data.data.value);
+            });
+            return deferred.promise;
+        }
+
+        vm.requestLores = function () {
+            var deferred = $q.defer();
+            $http.get('/getLores').then(function (data) {
+                deferred.resolve(data.data.value);
+            });
+            return deferred.promise;
+        }
     }
 }());
 

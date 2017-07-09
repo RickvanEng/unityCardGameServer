@@ -20,40 +20,40 @@
 
         vm.requestTypes = function () {
             var deferred = $q.defer();
-            DBService.requestTypes().then(function (data) {
-                deferred.resolve(data);
+            $http.get('/getTypes').then(function (data) {
+                deferred.resolve(data.data.value);
             });
             return deferred.promise;
         }
 
         vm.requestRoles = function () {
             var deferred = $q.defer();
-            DBService.requestRoles().then(function (data) {
-                deferred.resolve(data);
+            $http.get('/getRoles').then(function (data) {
+                deferred.resolve(data.data.value);
             });
             return deferred.promise;
         }
 
         vm.requestRaces = function () {
             var deferred = $q.defer();
-            DBService.requestRaces().then(function (data) {
-                deferred.resolve(data);
+            $http.get('/getRaces').then(function (data) {
+                deferred.resolve(data.data.value);
             });
             return deferred.promise;
         }
 
         vm.requestElements = function () {
             var deferred = $q.defer();
-            DBService.requestElements().then(function (data) {
-                deferred.resolve(data);
+            $http.get('/getElements').then(function (data) {
+                deferred.resolve(data.data.value);
             });
             return deferred.promise;
         }
 
-        vm.requestCards = function () {
+        vm.requestAllCards = function () {
             var deferred = $q.defer();
-            DBService.requestCards().then(function (data) {
-                deferred.resolve(data);
+            $http.get('/getAllCards').then(function (data) {
+                deferred.resolve(data.data.value);
             });
             return deferred.promise;
         }
@@ -69,6 +69,12 @@
         vm.deleteDeck = function (ID) {
             return $http.post('/deleteDeck', {'deckID': ID});
         }
+
+        // vm.requestTypes = function (user) {
+        //     return $http.get('/getTypes');
+        // }
+
+
 
     }
 }());
