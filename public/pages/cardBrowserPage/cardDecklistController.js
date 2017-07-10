@@ -51,7 +51,6 @@
             });
 
             cardBrowserService.requestAllCards().then(function (data1) {
-                console.log(data1)
                 vm.cards = data1;
                 vm.showCards = data1;
             });

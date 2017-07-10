@@ -10,9 +10,8 @@
 
     function DBConnectionService($q, $http) {
 
-
         //De enige socket in de file. Alles moet via deze socket worden geregeld.
-        var socket = io();
+        // var socket = io();
 
         var vm = this;
 
@@ -92,9 +91,9 @@
             'elements': [],
         };
 
-        this.saveNewDeck = function () {
-            socket.emit('saveNewDeck', newDeck);
-        }
+        // this.saveNewDeck = function () {
+        //     socket.emit('saveNewDeck', newDeck);
+        // }
 
         this.setNewDeck = function (data) {
             if (data.atri === 'race') {
@@ -110,21 +109,21 @@
         }
 
         //chat function
-        this.sendMessage = function (message) {
-            console.log('sending message: ' + message);
-            socket.emit('addToChat', { 'message': message });
-        }
+        // this.sendMessage = function (message) {
+        //     console.log('sending message: ' + message);
+        //     socket.emit('addToChat', { 'message': message });
+        // }
 
-        socket.on('addToChat', function (data) {
-            //console.log('hij is message return');
-            var chatText = document.getElementById('chat-text');
-            chatText.innerHTML += '<div>' + data.playerName + ': ' + data.message + '</div>';
-        });
+        // socket.on('addToChat', function (data) {
+        //     //console.log('hij is message return');
+        //     var chatText = document.getElementById('chat-text');
+        //     chatText.innerHTML += '<div>' + data.playerName + ': ' + data.message + '</div>';
+        // });
 
-        this.evalServer = function (message) {
-            console.log('sending message');
-            socket.emit('evalServer', message);
-        }
+        // this.evalServer = function (message) {
+        //     console.log('sending message');
+        //     socket.emit('evalServer', message);
+        // }
 
 
 

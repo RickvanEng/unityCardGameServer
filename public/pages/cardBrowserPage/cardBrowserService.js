@@ -8,9 +8,7 @@
     cardBrowserService.$inject = ['$q', '$http', 'DBConnectionService', 'loginService'];
 
     function cardBrowserService($q, $http, DBService, logService) {
-
-        console.log('cardbrowser service loaded');
-
+        
         var vm = this;
 
         var allCards;

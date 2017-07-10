@@ -17,9 +17,9 @@
         vm.title;
         vm.content;
 
-        vm.openWindow = function() {
-            $window.open('//facebook.com');
-        }
+        // vm.openWindow = function() {
+        //     $window.open('/game');
+        // }
 
 
 

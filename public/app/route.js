@@ -32,6 +32,16 @@
                     url: '/selectElement',
                     templateUrl: 'pages/createDeckPage/partials/selectElement.html'
                 })
+                
+                .state('gamePage', {
+                    url: '/gamePage',
+                    templateUrl: '../pages/gamePage/gamePage.html'
+                })
+
+                .state('gamePage.game', {
+                    url: '/game',
+                    templateUrl: '../pages/gamePage/game.html'
+                })
 
                 
 

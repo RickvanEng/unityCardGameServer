@@ -47,6 +47,22 @@
             });
             return deferred.promise;
         }
+
+        vm.requestElements = function () {
+            var deferred = $q.defer();
+            $http.get('/getElements').then(function (data) {
+                deferred.resolve(data.data.value);
+            });
+            return deferred.promise;
+        }
+
+        vm.requestAllCards = function () {
+            var deferred = $q.defer();
+            $http.get('/getAllCards').then(function (data) {
+                deferred.resolve(data.data.value);
+            });
+            return deferred.promise;
+        }
     }
 }());
 

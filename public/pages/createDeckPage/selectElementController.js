@@ -19,11 +19,11 @@
         vm.elements = [];
         vm.elementInfo;
 
-        DB.requestElements().then(function (data) {
+        newDeckService.requestElements().then(function (data) {
             vm.elements = data;
         });
 
-        DB.requestCards().then(function (data) {
+        newDeckService.requestAllCards().then(function (data) {
             //console.log(JSON.stringify(data));
             vm.allCards = data;
         });
@@ -46,7 +46,6 @@
 
         vm.saveDeck = function () {
             console.log('saving deck: ' + JSON.stringify(newDeckService.newDeck));
-
         };
 
         //stukje legt wat uit over het element. 

@@ -4,16 +4,19 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 var jsonParser = bodyParser.json();
 var router = express.Router();
 var ctrlmain = require('../controllers/main');
+//var ctrlmain = require('../controllers/loginController');
 
-router.get('/',                         ctrlmain.index);
+router.get('/',                               ctrlmain.index);
 
 router.get('/getTypes',                       ctrlmain.getTypes);
 router.get('/getRoles',                       ctrlmain.getRoles);
 router.get('/getRaces',                       ctrlmain.getRaces);
 router.get('/getElements',                    ctrlmain.getElements);
-
 router.get('/getAllCards',                    ctrlmain.getAllCards);
 router.get('/getLores',                       ctrlmain.getLores);
+
+// router.post('/playerLogin',                   ctrlLogin.playerLogin);
+// router.post('/playerlogout',                  ctrlLogin.playerLogout);
 
 router.post('/userCheck',       jsonParser,   ctrlmain.userCheck);
 router.post('/getUserDecks',    jsonParser,   ctrlmain.getUserDecks);
