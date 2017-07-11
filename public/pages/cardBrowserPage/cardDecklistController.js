@@ -14,20 +14,28 @@
 
         //vars voor decklist stuk 
         vm.playerDecks;
+        //lijst met cards in deck
         vm.cardList = [];
+        
         vm.deckName = '';
         vm.deckElements;
 
-        //vars voor card content stukje.
+        //vars voor card filter.
         vm.cardTypes;
         vm.cardRaces;
         vm.cardRoles;
         vm.cardElements;
-        vm.cards = [];
+        
         //parameters voor filter
         var filterActive = false;
         //array met card die word geshowed op pagina
+
+        //origineele card array
+        vm.cards = [];
+        //cards die worden laten zien met filter applied
         vm.showCards = [];
+
+        vm.filterArray = [];
 
         var deckID;
 
@@ -53,6 +61,7 @@
             cardBrowserService.requestAllCards().then(function (data1) {
                 vm.cards = data1;
                 vm.showCards = data1;
+                vm.filter('element', 'fire');
             });
         };
 
@@ -120,33 +129,42 @@
     vm.filter = function (category, subject) {
         if (filterActive) {
             filterActive = false;
-            cardBrowserService.requestAllCards().then(function (data1) {
-                vm.showCards = data1;
-            });
+            for (var x = 0; x < vm.filterArray.length; x++) {
+                vm.showCards.push(vm.filterArray[x]);
+                vm.filterArray.splice([x], 1);
+                x--;
+            }
+            // cardBrowserService.requestAllCards().then(function (data1) {
+            //     vm.showCards = data1;
+            // });
         } else {
             filterActive = true;
             for (var i = 0; i < vm.showCards.length; i++) {
                 switch (category) {
                     case 'race':
                         if (vm.showCards[i].race !== subject) {
+                            vm.filterArray.push(vm.showCards[i]);
                             vm.showCards.splice([i], 1);
                             i--;
                         }
                         break;
                     case 'type':
                         if (vm.showCards[i].type !== subject) {
+                            vm.filterArray.push(vm.showCards[i]);
                             vm.showCards.splice([i], 1);
                             i--;
                         }
                         break;
                     case 'role':
                         if (vm.showCards[i].role !== subject) {
+                            vm.filterArray.push(vm.showCards[i]);
                             vm.showCards.splice([i], 1);
                             i--;
                         }
                         break;
                     case 'element':
                         if (vm.showCards[i].element !== subject) {
+                            vm.filterArray.push(vm.showCards[i]);
                             vm.showCards.splice([i], 1);
                             i--;
                         }

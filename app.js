@@ -71,7 +71,7 @@ io.sockets.on('connection', function (socket) {
 
     var playerName;
 
-    Player.onConnect(socket, data.username);
+    // Player.onConnect(socket, data.username);
 
     
 
