@@ -31,6 +31,7 @@ var SOCKET_LIST2 = [];
 var DEBUG = true;
 var CARD_LIST = [];
 
+var searchForOpponent = [];
 
 var dao = require("./app_server/modules/dao.js");
 
@@ -39,11 +40,20 @@ var Player = function (id, socketId) {
     var socketId = socketId;
 }
 
-Player.list = {};
+Player.list = [];
 
-Player.onConnect = function (socket, data) {
-    var player = Player(data.username);
-    var socketId = Player(socket.id);
+Player.onConnect = function (data, callback) {
+    console.log(Player.list)
+    var obj = {
+        'player': data.name,
+        'deck': null,
+        'socket': data.socket
+    };
+
+    Player.list.push(obj);
+    searchForOpponent.push(obj);
+
+    callback();
 }
 
 Player.onDisconnect = function (socket) {
@@ -53,27 +63,38 @@ Player.onDisconnect = function (socket) {
 
 
 
-//function die als server voor eerst laad alle kaarten ophaald van de db.
-
-
 //SOCKETS
 var io = require('socket.io')(serv, {});
 io.sockets.on('connection', function (socket) {
 
     console.log('socket connect');
-    
-    socket.on('update', function () {
-        console.log('in')
-        socket.emit('matchFound');
-    });
-
     socket.id = Math.random();
+
+    //SOCKET_LIST.push(socket);
+
+    socket.on('enterQue', function () {
+        Player.onConnect({ 'socket': socket, 'name': 'Rick' }, function (err, res) {
+            console.log('list length = ' + Player.list.length);
+            if (Player.list.length > 1) {
+                for (var i in Player.list) {
+                    // searchForOpponent[i].socket.emit('matchFound');
+                }
+            }
+        });
+
+        for (var i in Player.list) {
+            if (socket === Player.list[i].socket) {
+                console.log('match');
+            }
+        }
+        console.log('deck recieved')
+    });
 
     var playerName;
 
     // Player.onConnect(socket, data.username);
 
-    
+
 
     // socket.on('loginCheck', function (data) {
     //     //console.log(playerName);

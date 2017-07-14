@@ -14,7 +14,7 @@
         // var socket = io();
 
         var vm = this;
-
+        
         // var chat = io.connect('http://localhost/2000/chat');
         // var news = io.connect('http://localhost/2000/news');
 

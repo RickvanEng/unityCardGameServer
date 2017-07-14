@@ -11,7 +11,7 @@
             <div class="w20 center">
                 <button type="button" ng-click="infoCtrl.buttonClick('Rules')">Rules</button>
                 <button type="button" ng-click="infoCtrl.buttonClick('Lore')">Lore</button>
-                <a href="#gamePage" target="_blank">Start Game</a>
+                <a href="#gamePage/loading" ng-click="infoCtrl.enterQue()">Start Game</a>
             </div>
 
             <hr>
@@ -23,27 +23,12 @@
 
             </div>
         </div>
+
+        Select your deck
+
+        <div data-ng-repeat="deck in infoCtrl.playerDecks">
+            <button ng-click="infoCtrl.selectDeck(deck)">{{deck.deckName}}</button>
+        </div>
+
     </div>
-
-    <!--<div class="Two border fLeft">
-        <div class="selectedDeckTitle">
-            <h2>Selected deck: {{selectedDeck}}</h2>
-        </div>
-
-        <div class="selectedDeck">
-        </div>
-
-        <div class="editDeckDiv">
-            <a href="#deckBuilder" ><button type="button">Edit Deck!</button></a>
-        </div>
-
-        <a href="#Deckbuilder" class="button" data-ng-click="selectDeck(deck)">
-            <span>Edit Decks</span>
-        </a>
-    </div>
-
-    <div id="Three">
-        <a href="#play" ><button type="button">Play!</button></a>
-    </div>-->
-
 </div>

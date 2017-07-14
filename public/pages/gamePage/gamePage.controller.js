@@ -15,10 +15,6 @@
         var vm = this;
         vm.message = gameService.messageFunction();
 
-        vm.click = function() {
-            gameService.connect();
-        }
-
     }
 
 }());

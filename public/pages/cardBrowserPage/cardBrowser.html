@@ -46,7 +46,7 @@
         <!-- here starts the card file, css -->
         <div class="CARD-cardBrowser-cards">
           <ul>
-            <li class=' hvr-grow-shadow' data-ng-repeat="card in deckListCtrl.showCards" data-ng-click="deckListCtrl.addToDeckList(card)">
+            <li class=' hvr-grow-shadow' data-ng-repeat="card in deckListCtrl.showCards | orderBy: card.class.level" data-ng-click="deckListCtrl.addToDeckList(card)">
               <card-component card='card' card-color="deckListCtrl.cardColor(card)" class="CARD-main"></card-component>
             </li>
           </ul>

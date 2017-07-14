@@ -13,8 +13,8 @@
                     templateUrl: '../pages/homePage/home.html'
                 })
                 .state('theGame', {
-                    url: '/theGame',
-                    templateUrl: '../pages/theGamePage/theGameInfo.html'
+                    url: '/theGameInfo',
+                    templateUrl: '../pages/theGameInfoPage/theGameInfo.html'
                 })
                 .state('cardBrowser', {
                     url: '/cardBrowser',
@@ -38,9 +38,14 @@
                     templateUrl: '../pages/gamePage/gamePage.html'
                 })
 
+                .state('gamePage.loading', {
+                    url: '/loading',
+                    templateUrl: '../pages/gamePage/partials/gameloading.html'
+                })
+
                 .state('gamePage.game', {
                     url: '/game',
-                    templateUrl: '../pages/gamePage/game.html'
+                    templateUrl: '../pages/gamePage/partials/game.html'
                 })
 
                 
