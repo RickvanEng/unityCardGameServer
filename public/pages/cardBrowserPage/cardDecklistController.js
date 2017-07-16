@@ -123,8 +123,6 @@
             vm.cardList.splice(index, 1);
         }
 
-
-
         //Content waar de cards in geladen worden!
 
         vm.filter = function (category, subject) {

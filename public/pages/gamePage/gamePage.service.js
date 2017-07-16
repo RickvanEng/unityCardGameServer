@@ -9,8 +9,6 @@
 
     function gamePageService($q, $http, DBService, logService, $location, $window) {
 
-        console.log('loaded zooi');
-
         var vm = this;
         var socket = io();
 
@@ -22,14 +20,19 @@
         }
 
         vm.enterQue = function() {
-            console.log('wtf 2')
             //commit deck and enter search for player que
+            console.log(vm.chosenDeck)
             socket.emit('enterQue', vm.chosenDeck);
         }
 
-        socket.on('matchFound', function () {
+        socket.on('matchFound', function (data) {
             console.log('binnen!');
-            socket.emit('commitDeck', )
+            console.log(data.deck);
+        });
+
+        socket.on('test', function (data) {
+            console.log(data.name);
+            vm.message = data.name;
         });
     }
 }());

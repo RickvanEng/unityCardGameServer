@@ -27,12 +27,11 @@
         }
 
         vm.enterQue = function() {
-            console.log('wtf?')
             gamePageService.enterQue();
         }
 
         vm.selectDeck = function(deck) {
-            DBService.chosenDeck = deck;
+            gamePageService.chosenDeck = deck;
         }
  
     }

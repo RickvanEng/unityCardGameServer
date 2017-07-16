@@ -16,6 +16,7 @@ app.use(express.static('public'))
 // view engine setup
 app.set('views', path.join(__dirname, 'app_server', 'views'));
 var index = require('./app_server/routes/index');
+var MatchPlayerClass = require('./app_server/controllers/playermatchingController');
 // routes naar alle pages
 app.use('/', index);
 
@@ -31,7 +32,7 @@ var SOCKET_LIST2 = [];
 var DEBUG = true;
 var CARD_LIST = [];
 
-var searchForOpponent = [];
+var playersInQue = [];
 
 var dao = require("./app_server/modules/dao.js");
 
@@ -42,16 +43,17 @@ var Player = function (id, socketId) {
 
 Player.list = [];
 
+
+
 Player.onConnect = function (data, callback) {
-    console.log(Player.list)
     var obj = {
         'player': data.name,
-        'deck': null,
+        'deck': data.deck,
         'socket': data.socket
     };
 
     Player.list.push(obj);
-    searchForOpponent.push(obj);
+    playersInQue.push(obj);
 
     callback();
 }
@@ -67,27 +69,61 @@ Player.onDisconnect = function (socket) {
 var io = require('socket.io')(serv, {});
 io.sockets.on('connection', function (socket) {
 
+    var player;
+    var opponent;
+
     console.log('socket connect');
-    socket.id = Math.random();
+    console.log(socket.id)
+    //socket.id = Math.random();
 
     //SOCKET_LIST.push(socket);
 
-    socket.on('enterQue', function () {
-        Player.onConnect({ 'socket': socket, 'name': 'Rick' }, function (err, res) {
-            console.log('list length = ' + Player.list.length);
-            if (Player.list.length > 1) {
-                for (var i in Player.list) {
-                    // searchForOpponent[i].socket.emit('matchFound');
+    //adds player to the que
+    socket.on('enterQue', function (deck) {
+        Player.onConnect({ 'socket': socket, 'name': 'Rick', 'deck': deck }, function (err, res) {
+            player = {
+                'socket': socket,
+                'name': 'Rick',
+                'deck': deck
+            };
+
+            //roep hier method aan in andere class, stuur player in que mee.
+            //returned matched players
+            //moeten uit playerinQue qorden gehaald
+            //pushed als matched pair in nieuwe array
+            MatchPlayerClass.matchPlayerForBattle(playersInQue, player, function (res1, err) {
+
+                var opponent = res1.player2;
+
+                for (var x in playersInQue) {
+                    if (playersInQue[x].socket === res1.player1.socket) {
+                        playersInQue.splice(x, 1);
+                        console.log('player spliced');
+                    }
+
+                    if (playersInQue[x].socket === res1.player2.socket) {
+                        playersInQue.splice(x, 1);
+                        console.log('player spliced');
+                    }
                 }
-            }
+
+                console.log('socket van player (' + player.deck.deckName + ') = ' + player.socket.id)
+                console.log('socket van opponent (' + opponent.deck.deckName + ') = ' + opponent.socket.id)
+
+                socket.emit('test', { 'name': opponent.deck.deckName });
+                opponent.socket.to('test', {'name': player.deck.deckName});
+
+
+
+            })
         });
 
-        for (var i in Player.list) {
-            if (socket === Player.list[i].socket) {
-                console.log('match');
-            }
-        }
-        console.log('deck recieved')
+        // for (var i in Player.list) {
+        //     if (socket === Player.list[i].socket) {
+        //         console.log('match');
+        //     }
+        // }
+        //console.log('deck recieved')
     });
 
     var playerName;
