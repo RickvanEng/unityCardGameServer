@@ -19,6 +19,8 @@
             return vm.message;
         }
 
+        socket.emit('nogwat');
+
         vm.enterQue = function() {
             //commit deck and enter search for player que
             console.log(vm.chosenDeck)

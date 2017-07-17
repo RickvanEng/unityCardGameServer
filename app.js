@@ -2,6 +2,8 @@ var mongojs = require("mongojs");
 var db = mongojs('localhost:27017/cardGame', ['players', 'cards', 'decks', 'content', 'races', 'types', 'elements', 'roles']);
 var ObjectId = require('mongodb').ObjectID;
 
+
+
 // var router = express.Router();
 
 var async = require('async');
@@ -10,6 +12,9 @@ var express = require('express');
 var app = express();
 var serv = require('http').createServer(app);
 var path = require('path')
+var dao = require("./app_server/modules/dao.js");
+
+var io = require('socket.io')(serv, {});
 
 app.use(express.static('public'))
 
@@ -34,7 +39,7 @@ var CARD_LIST = [];
 
 var playersInQue = [];
 
-var dao = require("./app_server/modules/dao.js");
+
 
 var Player = function (id, socketId) {
     var playerId = id;
@@ -45,13 +50,14 @@ Player.list = [];
 
 
 
-Player.onConnect = function (data, callback) {
+Player.onConnect = function (player, callback) {
     var obj = {
-        'player': data.name,
-        'deck': data.deck,
-        'socket': data.socket
+        'player': player.name,
+        'deck': player.deck,
+        'socket': player.socket
     };
 
+    //add ze aan algemene playerList en dat ze opzoek zijn naar opponent
     Player.list.push(obj);
     playersInQue.push(obj);
 
@@ -65,65 +71,78 @@ Player.onDisconnect = function (socket) {
 
 
 
+
+
 //SOCKETS
-var io = require('socket.io')(serv, {});
+
+
+function sendData() {
+    console.log('in send data');
+    io.broadcast.to('room1').emit('test', { 'name': 'bla' });
+    //io.emit('room1').emit('test', { 'name': 'bla' });
+}
+
 io.sockets.on('connection', function (socket) {
 
-    var player;
+    console.log('socket ' + socket.id + ' connected');
+
+    var player = {
+        'id': Math.random(),
+        'socket': socket,
+        'name': null,
+        'deck': null,
+        'room': null
+    };
+
     var opponent;
 
-    console.log('socket connect');
-    console.log(socket.id)
-    //socket.id = Math.random();
-
-    //SOCKET_LIST.push(socket);
+    Player.onConnect(player, function (err, res) {
+        console.log('player object added succesfully')
+    });
 
     //adds player to the que
     socket.on('enterQue', function (deck) {
-        Player.onConnect({ 'socket': socket, 'name': 'Rick', 'deck': deck }, function (err, res) {
-            player = {
-                'socket': socket,
-                'name': 'Rick',
-                'deck': deck
-            };
+        //add chosen deck to the player object
+        player.deck = deck;
 
-            //roep hier method aan in andere class, stuur player in que mee.
-            //returned matched players
-            //moeten uit playerinQue qorden gehaald
-            //pushed als matched pair in nieuwe array
-            MatchPlayerClass.matchPlayerForBattle(playersInQue, player, function (res1, err) {
+        //roep hier method aan in andere class, stuur player in que mee.
+        //returned matched players
+        //moeten uit playerinQue qorden gehaald
+        //pushed als matched pair in nieuwe array
+        MatchPlayerClass.matchPlayerForBattle(playersInQue, player, function (res, err) {
 
-                var opponent = res1.player2;
+            if (res) {
+                console.log(res);
 
+                removeFromQue(res.player1, res.player2);
+
+                //remove players uit de Matchlist so they cant get matched again.
                 for (var x in playersInQue) {
-                    if (playersInQue[x].socket === res1.player1.socket) {
+                    if (playersInQue[x].socket === res.player1.socket) {
                         playersInQue.splice(x, 1);
-                        console.log('player spliced');
+                        //console.log('player spliced');
                     }
 
-                    if (playersInQue[x].socket === res1.player2.socket) {
+                    if (playersInQue[x].socket === res.player2.socket) {
                         playersInQue.splice(x, 1);
-                        console.log('player spliced');
+                        //console.log('player spliced');
                     }
                 }
+            } else {
+                console.log(err);
+            }
 
-                console.log('socket van player (' + player.deck.deckName + ') = ' + player.socket.id)
-                console.log('socket van opponent (' + opponent.deck.deckName + ') = ' + opponent.socket.id)
+            //emit naar alle sockets die er zijn
+            //io.sockets.emit('test', {'name': 'bla'});
 
-                socket.emit('test', { 'name': opponent.deck.deckName });
-                opponent.socket.to('test', {'name': player.deck.deckName});
+            //Emit naar een specifieke socket
+            //Player.list[i].socket.emit('test', {'name': 'bla'});
 
 
-
-            })
-        });
-
-        // for (var i in Player.list) {
-        //     if (socket === Player.list[i].socket) {
-        //         console.log('match');
-        //     }
-        // }
-        //console.log('deck recieved')
+            // for (var i in Player.list) {
+            //     Player.list[i].socket.emit('test', {'name': 'bla'});
+            // }
+        })
     });
 
     var playerName;
@@ -226,4 +245,6 @@ io.sockets.on('connection', function (socket) {
         var res = eval(data);
         socket.emit('evalAnswer', res);
     });
+
+
 });
