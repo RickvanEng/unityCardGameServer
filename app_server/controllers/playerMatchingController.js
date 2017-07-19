@@ -1,8 +1,6 @@
 var async = require('async');
 
 module.exports.matchPlayerForBattle = function (playersInQue, player, cb) {
-    console.log('searching for opponent')
-
     if (playersInQue.length > 1) {
 
         var players = {

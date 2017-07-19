@@ -15,6 +15,7 @@
         var vm = this;
         vm.message = gameService.messageFunction();
 
+
     }
 
 }());

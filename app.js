@@ -50,16 +50,16 @@ Player.list = [];
 
 
 
-Player.onConnect = function (player, callback) {
+Player.onConnect = function (id, socket, callback) {
     var obj = {
-        'player': player.name,
-        'deck': player.deck,
-        'socket': player.socket
+        'playerName': 'tempName',
+        'deck': null,
+        'socket': socket,
+        'id': id
     };
 
     //add ze aan algemene playerList en dat ze opzoek zijn naar opponent
     Player.list.push(obj);
-    playersInQue.push(obj);
 
     callback();
 }
@@ -67,9 +67,24 @@ Player.onConnect = function (player, callback) {
 Player.onDisconnect = function (socket) {
     //console.log(Player.list[socket.id]);
     delete Player.list[socket.id];
+    console.log('deleted')
 }
 
+//gets player object out of Player.list
+function getPlayerObject(id, cb) {
+    for (var i in Player.list) {
+        if (Player.list[i].id === id) {
+            cb(Player.list[i]);
+        }
+    }
+}
 
+//add the player object to the que array
+function addPlayerToQue(player, cb) {
+    console.log('add player to que')
+    playersInQue.push(player);
+    cb();
+}
 
 
 
@@ -86,66 +101,80 @@ io.sockets.on('connection', function (socket) {
 
     console.log('socket ' + socket.id + ' connected');
 
-    var player = {
-        'id': Math.random(),
-        'socket': socket,
-        'name': null,
-        'deck': null,
-        'room': null
-    };
+    var id = Math.random();
+
+    // var player = {
+    //     'id': id,
+    //     'socket': socket,
+    //     'name': null,
+    //     'deck': null,
+    //     'room': null
+    // };
 
     var opponent;
 
-    Player.onConnect(player, function (err, res) {
+    Player.onConnect(id, socket, function (err, res) {
         console.log('player object added succesfully')
     });
 
     //adds player to the que
     socket.on('enterQue', function (deck) {
-        //add chosen deck to the player object
-        player.deck = deck;
+        getPlayerObject(id, function (player) {
+            player.deck = deck;
+        });
+
+        //get object, add object to que, en match met andere player
+        getPlayerObject(id, function (player) {
+            addPlayerToQue(player, function () {
+                MatchPlayerClass.matchPlayerForBattle(playersInQue, player, function (res, err) {
+
+                    if (res) {
+
+                        res.player1.socket.emit('test', { 'name': res.player2.deck.deckName });
+                        res.player2.socket.emit('test', { 'name': res.player1.deck.deckName });
+
+                        //removeFromQue(res.player1, res.player2);
+
+                        //remove players uit de Matchlist so they cant get matched again.
+
+                        // for (var x in playersInQue) {
+                        //     if (playersInQue[x].socket === res.player1.socket) {
+                        //         playersInQue.splice(x, 1);
+                        //         //console.log('player spliced');
+                        //     }
+
+                        //     if (playersInQue[x].socket === res.player2.socket) {
+                        //         playersInQue.splice(x, 1);
+                        //         //console.log('player spliced');
+                        //     }
+                        // }
+                    } else {
+                        console.log('error: '  + err);
+                    }
+
+                    //emit naar alle sockets die er zijn
+                    //io.sockets.emit('test', {'name': 'bla'});
+
+                    //Emit naar een specifieke socket
+                    //Player.list[i].socket.emit('test', {'name': 'bla'});
+                    //Player.list[i].socket.emit('test', {'name': 'bla'});
+
+
+                    // for (var i in Player.list) {
+                    //     Player.list[i].socket.emit('test', {'name': 'bla'});
+                    // }
+                });
+            });
+        });
+
+
 
         //roep hier method aan in andere class, stuur player in que mee.
         //returned matched players
         //moeten uit playerinQue qorden gehaald
         //pushed als matched pair in nieuwe array
-        MatchPlayerClass.matchPlayerForBattle(playersInQue, player, function (res, err) {
 
-            if (res) {
-                console.log(res);
-
-                removeFromQue(res.player1, res.player2);
-
-                //remove players uit de Matchlist so they cant get matched again.
-                for (var x in playersInQue) {
-                    if (playersInQue[x].socket === res.player1.socket) {
-                        playersInQue.splice(x, 1);
-                        //console.log('player spliced');
-                    }
-
-                    if (playersInQue[x].socket === res.player2.socket) {
-                        playersInQue.splice(x, 1);
-                        //console.log('player spliced');
-                    }
-                }
-            } else {
-                console.log(err);
-            }
-
-            //emit naar alle sockets die er zijn
-            //io.sockets.emit('test', {'name': 'bla'});
-
-            //Emit naar een specifieke socket
-            //Player.list[i].socket.emit('test', {'name': 'bla'});
-
-
-            // for (var i in Player.list) {
-            //     Player.list[i].socket.emit('test', {'name': 'bla'});
-            // }
-        })
     });
-
-    var playerName;
 
     // Player.onConnect(socket, data.username);
 
@@ -245,6 +274,12 @@ io.sockets.on('connection', function (socket) {
         var res = eval(data);
         socket.emit('evalAnswer', res);
     });
+
+    //werkt nog niet
+    socket.on('onDisconnect', function () {
+        console.log('dis')
+        Player.onDisconnect(socket);
+    })
 
 
 });
