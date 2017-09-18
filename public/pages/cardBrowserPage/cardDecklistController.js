@@ -32,6 +32,7 @@
 
         //origineele card array
         vm.cards = [];
+
         //cards die worden laten zien met filter applied
         vm.showCards = [];
 
@@ -57,9 +58,9 @@
                 vm.cardElements = data;
             });
 
-            cardBrowserService.requestAllCards().then(function (data1) {
-                vm.cards = data1;
-                vm.filter('element', 'fire');
+            cardBrowserService.requestAllCards().then(function (data) {
+                vm.cards = data;
+                vm.showCards = data;
             });
         };
 
@@ -69,7 +70,7 @@
             cardBrowserService.requestDecks(user).then(function (data) {
                 vm.playerDecks = data.data.value;
                 deckList.style.display = 'inline';
-                //threeOrMoreDecks();
+
                 if (newDeckService.deckBuilder) {
                     newDeckService.deckBuilder = false;
                     newDeckService.newDeck.deckOwner = '';
@@ -89,7 +90,6 @@
             });
         } else {
             console.log('not logged in');
-            //socket.emit('loginCheck');
         }
 
         vm.showDeckList = function (deck) {
@@ -170,7 +170,6 @@
         }
 
 
-
         // if (filterActive) {
         //     filterActive = false;
         //     for (var x = 0; x < vm.filterArray.length; x++) {
@@ -183,9 +182,7 @@
         //     // });
         // } else {
         //     filterActive = true;
-
         // }
-
 
 
         vm.saveDeck = function () {
@@ -203,7 +200,6 @@
         };
 
         vm.cardColor = function (deck) {
-            // console.log('gets called')
             return deck.element;
         };
 
@@ -224,17 +220,6 @@
                 vm.deckElements = [];
 
             });
-
-            // var deleteDeckName = document.getElementById("iput-deckName").value;
-            // socket.emit('deleteDeck', deleteDeckName);
-            // for (var i = 0; i < $scope.playerDecks.length; i++) {
-            //     if (deleteDeckName === $scope.playerDecks[i].deckName) {
-            //         console.log('in delete deck shizzle')
-            //         $scope.playerDecks.splice([i], 1);
-            //         $scope.$apply;
-            //     }
-            // }
-            // threeOrMoreDecks();
         };
     }
 }());

@@ -54,28 +54,7 @@ module.exports.getCardClassElement = function (elementId, cb) {
     });
 }
 
-
-module.exports.isValidPassword = function (data, cb) {
-    db.users.find({ username: data.name, password: data.password }, function (err, res) {
-        if (res.length > 0) {
-            cb(true);
-        }
-        else
-            cb(false);
-    });
-}
-
-module.exports.isUsernameTaken = function (data, cb) {
-    db.account.find({ username: data.username }, function (err, res) {
-        if (res.length > 0)
-            cb(true);
-        else
-            cb(false);
-    });
-}
-
 module.exports.isDeckNameTaken = function (newDeckName, playerName, cb) {
-    //console.log('in isDeckNameTaken method');
     db.decks.find({ deckName: newDeckName, deckOwner: playerName }, function (err, res) {
         if (res.length > 0)
             cb(true);
@@ -84,10 +63,7 @@ module.exports.isDeckNameTaken = function (newDeckName, playerName, cb) {
     });
 }
 
-//DELETE FUNCTIONS
-
 module.exports.deleteDeckFromDB = function (newDeckName, playerName, cb) {
-    //console.log('in deleteDeck method');
     db.decks.update({ deckName: newDeckName, deckOwner: playerName }, { $unset: { cards: 1 } }, { multi: true }, function (err, res) {
         if (res)
             cb(true);
@@ -97,10 +73,7 @@ module.exports.deleteDeckFromDB = function (newDeckName, playerName, cb) {
 }
 
 
-//SAVE FUNCTIONS
-
 module.exports.insertDeckInDB = function (newDeckName, playerName, cards, cb) {
-    //console.log('in insertDeck method');
     db.collection('decks').insert({
         "deckOwner": playerName,
         "deckName": newDeckName,
@@ -108,15 +81,6 @@ module.exports.insertDeckInDB = function (newDeckName, playerName, cards, cb) {
     }
     )
 };
-
-module.exports.saveNewUser = function (userName, password, cb) {
-    //console.log('in save Player method');
-    db.collection('users').insert({"username": userName, "password": password
-    }
-    )
-};
-
-//GET FUNCTIONS
 
 module.exports.getDecksFromDB = function (name, cb) {
     db.decks.find({ deckOwner: name }, function (err, res) {
@@ -129,34 +93,22 @@ module.exports.getDecksFromDB = function (name, cb) {
 module.exports.getSingleDeck = function (nameOfPlayer, nameOfDeck, cb) {
     db.decks.find({ deckOwner: nameOfPlayer, denkName: nameOfDeck }, function (err, res) {
         if (res.length > 0) {
-            //console.log('callback result ' + res);
             cb(res);
         }
     });
 }
 
-var getDecksCardsFromDB = module.exports.getDecksCardsFromDB = function (cardID, cb) {
-    db.cards.find({ "_id": ObjectId(cardID) }, function (err, card) {
-        if (err) {
-            //console.log("nopezzzz");
-        } else {
-            cb(card)
-        }
-    });
-}
-
-var getDeckRace = exports.getDeckRace = function (raceId, cb) {
-    //console.log('id = ' + raceId);
+module.exports.getDeckRace = function (raceId, cb) {
     db.races.find({ "_id": ObjectId(raceId) }, function (err, race) {
         if (err) {
-            //console.log("nopezzzz");
         } else {
-            cb(race)
+            cb(race);
         }
     });
 }
 
-var getDeckElements = module.exports.getDeckElements = function (elements, cb) {
+module.exports.getDeckElements = function (elements, cb) {
+    var counter = 0;
     var array = [];
     async.forEach(elements, function (element, callback) {
 
@@ -164,39 +116,14 @@ var getDeckElements = module.exports.getDeckElements = function (elements, cb) {
             if (err) {
 
             } else {
-                //console.log('in element finder enzo ' + element[0].element);
                 array.push(element[0]);
-                callback()
+                counter++;
+                callback();
             }
         });
 
     }, function () {
-        cb(array)
-    });
-}
-
-module.exports.loadDataInDecks = function (deck, cb) {
-    var deckArray = [];
-
-    getDeckRace(deck.race, function (raceRes) {
-        deck.race = raceRes[0].race;
-        
-        getDeckElements(deck.elements, function (elementsRes) {
-            deck.elements = elementsRes;
-
-            async.forEach(deck.cards, function (card, callback) {
-                getDecksCardsFromDB(card, function (card) {
-                    deckArray.push(card[0]);
-                    callback();
-                });
-
-            }, function () {
-                deck.cards = deckArray;
-                //console.log(deck);
-                //socket.emit('deckReturn', deck);
-                cb(deck);
-            });
-        });
+        cb(array);
     });
 }
 
@@ -217,7 +144,6 @@ module.exports.loadDataInNewDeck = function (deck, cb) {
             }, function () {
                 deck.cards = deckArray;
                 console.log(deck);
-                //socket.emit('deckReturn', deck);
                 cb(deck);
             });
         });

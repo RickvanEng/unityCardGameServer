@@ -31,16 +31,16 @@
 
         });
 
-        socket.on('test', function (data) {
-            console.log('wat')
-            console.log(data.name);
-            vm.message = data.name;
-            $timeout();
-        });
+        // socket.on('test', function (data) {
+        //     console.log('wat')
+        //     console.log(data.name);
+        //     vm.message = data.name;
+        //     $timeout();
+        // });
 
-        $timeout(function () {
-            $location.url('/gamePage/game');
-        })
+        // $timeout(function () {
+        //     $location.url('/gamePage/game');
+        // })
     }
 }());
 

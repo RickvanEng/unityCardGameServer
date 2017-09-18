@@ -2,194 +2,61 @@ var mongojs = require("mongojs");
 var db = mongojs('localhost:27017/cardGame', ['players', 'cards', 'decks', 'content', 'races', 'types', 'elements', 'roles']);
 var ObjectId = require('mongodb').ObjectID;
 
-
-
-// var router = express.Router();
-
 var async = require('async');
 
 var express = require('express');
 var app = express();
 var serv = require('http').createServer(app);
 var path = require('path')
-var dao = require("./app_server/modules/dao.js");
-
 var io = require('socket.io')(serv, {});
 
+var playerDao = require("./app_server/database/player.dao.js");
+var router = require('./app_server/routes/rest.router');
+var playerObject = require('./app_server/objects/player.object');
+
 app.use(express.static('public'))
-
-// view engine setup
 app.set('views', path.join(__dirname, 'app_server', 'views'));
-var index = require('./app_server/routes/index');
-var MatchPlayerClass = require('./app_server/controllers/playermatchingController');
-// routes naar alle pages
-app.use('/', index);
 
+app.use('/', router);
 
 serv.listen(2000);
 console.log("server started");
 
-var currentPage = '';
-var deckBuildrdy = false;
-
-var SOCKET_LIST = [];
-var SOCKET_LIST2 = [];
 var DEBUG = true;
-var CARD_LIST = [];
-
-var playersInQue = [];
 
 
-
-var Player = function (id, socketId) {
-    var playerId = id;
-    var socketId = socketId;
-}
-
-Player.list = [];
-
-
-
-Player.onConnect = function (id, socket, callback) {
-    var obj = {
-        'playerName': 'tempName',
-        'deck': null,
-        'socket': socket,
-        'id': id
-    };
-
-    //add ze aan algemene playerList en dat ze opzoek zijn naar opponent
-    Player.list.push(obj);
-
-    callback();
-}
-
-Player.onDisconnect = function (socket) {
-    //console.log(Player.list[socket.id]);
-    delete Player.list[socket.id];
-    console.log('deleted')
-}
-
-//gets player object out of Player.list
-function getPlayerObject(id, cb) {
-    for (var i in Player.list) {
-        if (Player.list[i].id === id) {
-            cb(Player.list[i]);
-        }
-    }
-}
-
-//add the player object to the que array
-function addPlayerToQue(player, cb) {
-    console.log('add player to que')
-    playersInQue.push(player);
-    cb();
-}
-
-
-
-//SOCKETS
-
-
-function sendData() {
-    console.log('in send data');
-    io.broadcast.to('room1').emit('test', { 'name': 'bla' });
-    //io.emit('room1').emit('test', { 'name': 'bla' });
-}
-
+//SOCKETS, this needs a new file
 io.sockets.on('connection', function (socket) {
 
     console.log('socket ' + socket.id + ' connected');
 
-    var id = Math.random();
+    var player = playerObject.newPlayerObject();
+    player.socket = socket;
+    player.playerID = Math.random();
 
-    // var player = {
-    //     'id': id,
-    //     'socket': socket,
-    //     'name': null,
-    //     'deck': null,
-    //     'room': null
-    // };
-
-    var opponent;
-
-    Player.onConnect(id, socket, function (err, res) {
-        console.log('player object added succesfully')
+    socket.on("USER_CONNECT", function () {
+        console.log('user: ' + socket.id + ', connected');
+        player.playerOnconnect(player);
     });
 
-    //adds player to the que
     socket.on('enterQue', function (deck) {
-        getPlayerObject(id, function (player) {
-            player.deck = deck;
-        });
+        playerObject.addPlayerToQue();
 
         //get object, add object to que, en match met andere player
-        getPlayerObject(id, function (player) {
-            addPlayerToQue(player, function () {
-                MatchPlayerClass.matchPlayerForBattle(playersInQue, player, function (res, err) {
-
-                    if (res) {
-
-                        res.player1.socket.emit('test', { 'name': res.player2.deck.deckName });
-                        res.player2.socket.emit('test', { 'name': res.player1.deck.deckName });
-
-                        //removeFromQue(res.player1, res.player2);
-
-                        //remove players uit de Matchlist so they cant get matched again.
-
-                        // for (var x in playersInQue) {
-                        //     if (playersInQue[x].socket === res.player1.socket) {
-                        //         playersInQue.splice(x, 1);
-                        //         //console.log('player spliced');
-                        //     }
-
-                        //     if (playersInQue[x].socket === res.player2.socket) {
-                        //         playersInQue.splice(x, 1);
-                        //         //console.log('player spliced');
-                        //     }
-                        // }
-                    } else {
-                        console.log('error: '  + err);
-                    }
-
-                    //emit naar alle sockets die er zijn
-                    //io.sockets.emit('test', {'name': 'bla'});
-
-                    //Emit naar een specifieke socket
-                    //Player.list[i].socket.emit('test', {'name': 'bla'});
-                    //Player.list[i].socket.emit('test', {'name': 'bla'});
-
-
-                    // for (var i in Player.list) {
-                    //     Player.list[i].socket.emit('test', {'name': 'bla'});
-                    // }
-                });
-            });
+        playerObject.matchPlayers(player, function (res, err) {
+            if (res) {
+                res.player1.socket.emit('test', { 'name': res.player2.deck.deckName });
+                res.player2.socket.emit('test', { 'name': res.player1.deck.deckName });
+            } else {
+                console.log('error: ' + err);
+            }
         });
-
-
-
-        //roep hier method aan in andere class, stuur player in que mee.
-        //returned matched players
-        //moeten uit playerinQue qorden gehaald
-        //pushed als matched pair in nieuwe array
-
     });
 
-    // Player.onConnect(socket, data.username);
 
+    // Tijdens testen is user "Rick" standaard ingelogd
 
-
-    // socket.on('loginCheck', function (data) {
-    //     //console.log(playerName);
-    //     if (loggedIn) {
-    //         socket.emit('loginCheckReturn', true)
-    //     }
-    // });
-
-    //Inloggen
     // socket.on('signIn', function (data) {
-    //     console.log(data.password);
     //     //hij kijkt of de naam en pass matchen in DB.
     //     dao.isValidPassword(data, function (res) {
     //         if (res) {
@@ -235,39 +102,35 @@ io.sockets.on('connection', function (socket) {
     // });
 
     //aanmelden
-    // socket.on('signUp', function (data) {
-    //     dao.isUsernameTaken(data, function (res) {
-    //         if (res) {
-    //             socket.emit('signUpResponse', { success: false });
-    //         } else {
-    //             dao.saveNewUser(data.username, data.password, function () {
-    //                 socket.emit('signUpResponse', { success: true });
-    //             });
-    //         }
-    //     });
-    // });
+    socket.on('signUp', function (data) {
+        dao.isUsernameTaken(data, function (res) {
+            if (res) {
+                socket.emit('signUpResponse', { success: false });
+            } else {
+                dao.saveNewUser(data.username, data.password, function () {
+                    socket.emit('signUpResponse', { success: true });
+                });
+            }
+        });
+    });
 
     //uitloggen
-    // socket.on('signOut', function () {
-    //     //console.log('player disconnected');
-    //     //console.log('SOCKET_LIST = ' + SOCKET_LIST.length);
-    //     Player.onDisconnect(socket);
-    //     SOCKET_LIST.splice(socket.id);
-    //     //console.log('SOCKET_LIST = ' + SOCKET_LIST.length);
-    //     socket.emit('signOut');
-    // });
+    socket.on('signOut', function () {
+        Player.onDisconnect(socket);
+        SOCKET_LIST.splice(socket.id);
+        socket.emit('signOut');
+    });
 
     //Chat functies
     socket.on('f', function (data) {
-        console.log('sending message from player : ' + playerName);
         var name = ("" + playerName);
-        //console.log(SOCKET_LIST[0]);
         for (var i in SOCKET_LIST) {
             SOCKET_LIST[i].emit('addToChat', { 'playerName': name, 'message': data.message });
         }
     });
 
-    //Evaluate function, can be used to check values of some vars and stuff
+    //Debug functie
+    //Evaluate function, can be used to check values of some vars
     socket.on('evalServer', function (data) {
         if (!DEBUG)
             return;
@@ -283,3 +146,18 @@ io.sockets.on('connection', function (socket) {
 
 
 });
+
+//emit naar alle sockets die er zijn
+//io.sockets.emit('test', {'name': 'bla'});
+
+//Emit naar een specifieke socket
+//Player.list[i].socket.emit('test', {'name': 'bla'});
+
+
+// for (var i in Player.list) {
+//     Player.list[i].socket.emit('test', {'name': 'bla'});
+// }
+
+// function sendData() {
+//     io.broadcast.to('room1').emit('test', { 'name': 'test' });
+// }
